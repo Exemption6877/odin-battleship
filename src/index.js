@@ -5,9 +5,11 @@ class Ship {
   }
 
   hit() {
-    this.currentHits++;
+    this.currentHits += 1;
   }
-  isSunk() {}
+  isSunk() {
+    return this.currentHits === this.maxHits;
+  }
 }
 
 class Carrier extends Ship {
