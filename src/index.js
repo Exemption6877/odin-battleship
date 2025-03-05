@@ -1,6 +1,6 @@
 class Ship {
-  constructor(maxHits) {
-    this.maxHits = maxHits;
+  constructor(length) {
+    this.length = length;
     this.currentHits = 0;
   }
 
@@ -8,7 +8,7 @@ class Ship {
     this.currentHits += 1;
   }
   isSunk() {
-    return this.currentHits === this.maxHits;
+    return this.currentHits === this.length;
   }
 }
 
@@ -42,4 +42,47 @@ class PatrolBoat extends Ship {
   }
 }
 
-export { Ship, Carrier, Battleship, Destroyer, Submarine, PatrolBoat };
+class Gameboard {
+  constructor() {
+    this.missedHits = 0;
+  }
+
+  borderCheck(coordinate) {
+    const [x, y] = coordinate;
+    return x >= 0 && x <= 9 && y >= 0 && y <= 9;
+  }
+
+  placeShip(coordinate, direction) {}
+
+  receiveAttack(coordinate) {}
+}
+
+/*
+    0   1   2   3   4   5   6   7   8   9
+0  [~] [~] [~] [~] [~] [~] [~] [~] [~] [~]
+1  [~] [~] [~] [~] [~] [~] [~] [~] [~] [~]
+2  [~] [~] [~] [~] [~] [~] [~] [~] [~] [~]
+3  [~] [~] [~] [~] [~] [~] [~] [~] [~] [~]
+4  [~] [~] [~] [~] [~] [~] [~] [~] [~] [~]
+5  [~] [~] [~] [~] [~] [~] [~] [~] [~] [~]
+6  [~] [~] [~] [~] [~] [~] [~] [~] [~] [~]
+7  [~] [~] [~] [~] [~] [~] [~] [~] [~] [~]
+8  [~] [~] [~] [~] [~] [~] [~] [~] [~] [~]
+9  [~] [~] [~] [~] [~] [~] [~] [~] [~] [~]
+
+Carrier
+Battleship
+Destroyer
+Submarine
+PatrolBoat
+*/
+
+export {
+  Ship,
+  Carrier,
+  Battleship,
+  Destroyer,
+  Submarine,
+  PatrolBoat,
+  Gameboard,
+};
