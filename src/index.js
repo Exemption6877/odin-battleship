@@ -4,7 +4,9 @@ class Ship {
     this.currentHits = 0;
   }
 
-  hit() {}
+  hit() {
+    this.currentHits++;
+  }
   isSunk() {}
 }
 
@@ -37,3 +39,5 @@ class PatrolBoat extends Ship {
     super(2);
   }
 }
+
+export { Ship, Carrier, Battleship, Destroyer, Submarine, PatrolBoat };
