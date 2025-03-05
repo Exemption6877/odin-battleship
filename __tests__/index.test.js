@@ -1,4 +1,4 @@
-import { Carrier } from "../src";
+import { Carrier, PatrolBoat } from "../src";
 import { Gameboard } from "../src";
 
 describe("Ship Class Testing", () => {
@@ -70,6 +70,15 @@ describe("Gameboard place & attack", () => {
   beforeEach(() => {
     newGameboard = new Gameboard();
   });
-  
 
+  test("Attack blank space", () => {
+    Gameboard.receiveAttack([0, 0]);
+    expect(newGameboard.receiveAttack).toBeFalsy();
+  });
+
+  // Place ship at [0,0] & [0,1]
+  test("Place ship vertically and hit", () => {
+    newGameboard.placeShip([0, 0], PatrolBoat, vertical);
+    expect(newGameboard.receiveAttack([0, 0])).toBeTruthy();
+  });
 });
