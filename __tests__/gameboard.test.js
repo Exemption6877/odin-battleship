@@ -1,8 +1,6 @@
 import { Carrier, PatrolBoat } from "../src";
 import { Gameboard } from "../src";
 
-
-
 describe("Gameboard borderCheck()", () => {
   let newGameboard;
   beforeEach(() => {
@@ -35,18 +33,28 @@ describe("Gameboard borderCheck()", () => {
 });
 
 describe("Gameboard place & attack", () => {
+  let newGameboard;
+
   beforeEach(() => {
     newGameboard = new Gameboard();
   });
 
+  test("Check ships pushed coords", () => {
+    const patrol = new PatrolBoat();
+    newGameboard.placeShip([0, 1], patrol, "vertical");
+    expect(patrol.coordinates).toEqual([
+      [0, 1],
+      [0, 0],
+    ]);
+  });
+
   test("Attack blank space", () => {
-    Gameboard.receiveAttack([0, 0]);
-    expect(newGameboard.receiveAttack).toBeFalsy();
+    expect(newGameboard.receiveAttack([0, 0])).toBeFalsy();
   });
 
   // Place ship at [0,0] & [0,1]
-  test("Place ship vertically and hit", () => {
-    newGameboard.placeShip([0, 0], PatrolBoat, vertical);
+  test("Place PatrolBoat vertically and hit once", () => {
+    newGameboard.placeShip([0, 0], new PatrolBoat(), "vertical");
     expect(newGameboard.receiveAttack([0, 0])).toBeTruthy();
   });
 });

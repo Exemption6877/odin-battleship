@@ -2,6 +2,7 @@ class Ship {
   constructor(length) {
     this.length = length;
     this.currentHits = 0;
+    this.coordinates = [];
   }
 
   hit() {
@@ -9,6 +10,10 @@ class Ship {
   }
   isSunk() {
     return this.currentHits === this.length;
+  }
+
+  setCoordinate(coordinate) {
+    this.coordinates.push(coordinate);
   }
 }
 
@@ -44,7 +49,8 @@ class PatrolBoat extends Ship {
 
 class Gameboard {
   constructor() {
-    this.missedHits = 0;
+    this.missedHits = [];
+    this.placedShips = [];
   }
 
   borderCheck(coordinate) {
@@ -52,7 +58,27 @@ class Gameboard {
     return x >= 0 && x <= 9 && y >= 0 && y <= 9;
   }
 
-  placeShip(coordinate, direction) {}
+  placeShip(coordinate, ship, direction) {
+    let [x, y] = coordinate;
+    let fullCoordinates = [];
+
+    for (let i = 0; i < ship.length; i++) {
+      if (!this.borderCheck([x, y])) {
+        throw new Error("Tail out of bounds");
+      }
+      fullCoordinates.push([x, y]);
+      if (direction === "vertical") {
+        y -= 1;
+      } else if (direction === "horizontal") {
+        x += 1;
+      }
+    }
+    fullCoordinates.forEach((coord) => {
+      ship.setCoordinate(coord);
+    });
+
+    this.placedShips.push(ship);
+  }
 
   receiveAttack(coordinate) {}
 }
@@ -70,7 +96,7 @@ class Gameboard {
 1  [~] [~] [~] [~] [~] [~] [~] [~] [~] [~]
 0  [~] [~] [~] [~] [~] [~] [~] [~] [~] [~]
     0   1   2   3   4   5   6   7   8   9
-    
+
 Carrier
 Battleship
 Destroyer
