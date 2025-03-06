@@ -7,40 +7,41 @@ describe("Gameboard borderCheck()", () => {
     newGameboard = new Gameboard();
   });
 
-  test("Gameboard x=10", () => {
+  test("x=10", () => {
     expect(newGameboard.borderCheck([10, 0])).toBeFalsy();
   });
 
-  test("Gameboard y=10", () => {
+  test("y=10", () => {
     expect(newGameboard.borderCheck([0, 10])).toBeFalsy();
   });
 
-  test("Gameboard x=-1", () => {
+  test("x=-1", () => {
     expect(newGameboard.borderCheck([-1, 1])).toBeFalsy();
   });
 
-  test("Gameboard y=-1", () => {
+  test("y=-1", () => {
     expect(newGameboard.borderCheck([1, -1])).toBeFalsy();
   });
 
-  test("Gameboard within border #1", () => {
+  test("Inside gameboard #1", () => {
     expect(newGameboard.borderCheck([2, 3])).toBeTruthy();
   });
 
-  test("Gameboard within border #2", () => {
+  test("Inside gameboard #2", () => {
     expect(newGameboard.borderCheck([5, 9])).toBeTruthy();
   });
 });
 
-describe("Gameboard place & attack", () => {
+describe("PatrolBoat inside gameboard", () => {
   let newGameboard;
+  let patrol;
 
   beforeEach(() => {
     newGameboard = new Gameboard();
+    patrol = new PatrolBoat();
   });
 
-  test("Check ships pushed coords", () => {
-    const patrol = new PatrolBoat();
+  test("PatrolBoat takes both squares vertical", () => {
     newGameboard.placeShip([0, 1], patrol, "vertical");
     expect(patrol.coordinates).toEqual([
       [0, 1],
@@ -48,30 +49,50 @@ describe("Gameboard place & attack", () => {
     ]);
   });
 
-  test("Check placedShips after adding ship", () => {
-    const patrol = new PatrolBoat();
+  test("PatrolBoat added to newGameboard.placedShips", () => {
     newGameboard.placeShip([0, 1], patrol, "vertical");
     expect(newGameboard.placedShips).toEqual([patrol]);
   });
 
-  test("Attack Ship", () => {
-    const patrol = new PatrolBoat();
+  test("Attack PatrolBoat", () => {
     newGameboard.placeShip([0, 1], patrol, "vertical");
     expect(newGameboard.receiveAttack([0, 0])).toBeTruthy();
   });
 
-  test("Attack Blank Space", () => {
-    const patrol = new PatrolBoat();
+  test("Destroy PatrolBoat", () => {
+    newGameboard.placeShip([0, 1], patrol, "vertical");
+    newGameboard.receiveAttack([0, 1]);
+    newGameboard.receiveAttack([0, 0]);
+    expect(patrol.isSunk()).toBeTruthy();
+  });
+});
+
+describe("Gameboard general functions", () => {
+  let newGameboard;
+  let patrol;
+
+  beforeEach(() => {
+    newGameboard = new Gameboard();
+    patrol = new PatrolBoat();
+  });
+
+  test("Miss hit", () => {
     newGameboard.placeShip([0, 1], patrol, "vertical");
     expect(newGameboard.receiveAttack([0, 2])).toBeFalsy();
   });
 
-  test("Duplicate Attack", () => {
+  test("Throw error on duplicate attack", () => {
     newGameboard.receiveAttack([0, 1]);
     expect(() => newGameboard.receiveAttack([0, 1])).toThrow(Error);
   });
 
-  test("Throw error on the same coordinate", () => {
+  test("Destroy & remove ship from Gameboard", () => {
+    newGameboard.placeShip([0, 1], patrol, "vertical");
+    newGameboard.receiveAttack([0, 1]);
+    newGameboard.receiveAttack([0, 0]);
+    expect(newGameboard.placedShips).not.toContain(patrol);
+  });
+  test("Throw error when trying to place two PatrolBoats on the same square", () => {
     const patrol1 = new PatrolBoat();
     const patrol2 = new PatrolBoat();
     newGameboard.placeShip([0, 1], patrol1, "vertical");
@@ -79,21 +100,5 @@ describe("Gameboard place & attack", () => {
     expect(() => newGameboard.placeShip([0, 1], patrol2, "vertical")).toThrow(
       Error
     );
-  });
-
-  test("Destroy ship", () => {
-    const patrol = new PatrolBoat();
-    newGameboard.placeShip([0, 1], patrol, "vertical");
-    newGameboard.receiveAttack([0, 1]);
-    newGameboard.receiveAttack([0, 0]);
-    expect(patrol.isSunk()).toBeTruthy();
-  });
-
-  test("Destroy & remove ship from Gameboard", () => {
-    const patrol = new PatrolBoat();
-    newGameboard.placeShip([0, 1], patrol, "vertical");
-    newGameboard.receiveAttack([0, 1]);
-    newGameboard.receiveAttack([0, 0]);
-    expect(newGameboard.placedShips).not.toContain(patrol);
   });
 });

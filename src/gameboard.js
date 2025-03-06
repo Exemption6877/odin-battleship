@@ -86,6 +86,8 @@ class Gameboard {
 export { Gameboard };
 
 /*
+I should implement a feature to make neighbouring cells unsettable.
+
 y
 9  [~] [~] [~] [~] [~] [~] [~] [~] [~] [~]
 8  [~] [~] [~] [~] [~] [~] [~] [~] [~] [~]

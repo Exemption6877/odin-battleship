@@ -32,5 +32,3 @@ describe("Ship Class Testing", () => {
     expect(newShip.isSunk()).toBeFalsy();
   });
 });
-
-describe("Ship Coordinate testing", () => {});
