@@ -49,7 +49,7 @@ class PatrolBoat extends Ship {
 
 class Gameboard {
   constructor() {
-    this.missedHits = [];
+    this.hits = [];
     this.placedShips = [];
   }
 
@@ -57,6 +57,8 @@ class Gameboard {
     const [x, y] = coordinate;
     return x >= 0 && x <= 9 && y >= 0 && y <= 9;
   }
+
+  // NEED TO IMPLEMENT CHECK FOR SAME COORDS
 
   placeShip(coordinate, ship, direction) {
     let [x, y] = coordinate;
@@ -80,11 +82,23 @@ class Gameboard {
     this.placedShips.push(ship);
   }
 
-  receiveAttack(coordinate) {}
+  receiveAttack(coordinate) {
+    let [x, y] = coordinate;
+    for (const ship of this.placedShips) {
+      for (let i = 0; i < ship.coordinates.length; i++) {
+        if (ship.coordinates[i][0] === x && ship.coordinates[i][1] === y) {
+          this.hits.push(coordinate);
+          ship.currentHits += 1;
+          return true;
+        }
+      }
+    }
+    return false;
+  }
 }
 
 /*
-
+y
 9  [~] [~] [~] [~] [~] [~] [~] [~] [~] [~]
 8  [~] [~] [~] [~] [~] [~] [~] [~] [~] [~]
 7  [~] [~] [~] [~] [~] [~] [~] [~] [~] [~]
@@ -95,7 +109,7 @@ class Gameboard {
 2  [~] [~] [~] [~] [~] [~] [~] [~] [~] [~]
 1  [~] [~] [~] [~] [~] [~] [~] [~] [~] [~]
 0  [~] [~] [~] [~] [~] [~] [~] [~] [~] [~]
-    0   1   2   3   4   5   6   7   8   9
+    0   1   2   3   4   5   6   7   8   9 x
 
 Carrier
 Battleship

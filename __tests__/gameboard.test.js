@@ -48,13 +48,21 @@ describe("Gameboard place & attack", () => {
     ]);
   });
 
-  test("Attack blank space", () => {
-    expect(newGameboard.receiveAttack([0, 0])).toBeFalsy();
+  test("Check placedShips after adding ship", () => {
+    const patrol = new PatrolBoat();
+    newGameboard.placeShip([0, 1], patrol, "vertical");
+    expect(newGameboard.placedShips).toEqual([patrol]);
   });
 
-  // Place ship at [0,0] & [0,1]
-  test("Place PatrolBoat vertically and hit once", () => {
-    newGameboard.placeShip([0, 0], new PatrolBoat(), "vertical");
+  test("Attack Ship", () => {
+    const patrol = new PatrolBoat();
+    newGameboard.placeShip([0, 1], patrol, "vertical");
     expect(newGameboard.receiveAttack([0, 0])).toBeTruthy();
+  });
+
+  test("Attack Blank Space", () => {
+    const patrol = new PatrolBoat();
+    newGameboard.placeShip([0, 1], patrol, "vertical");
+    expect(newGameboard.receiveAttack([0, 2])).toBeFalsy();
   });
 });
