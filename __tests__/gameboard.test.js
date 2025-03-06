@@ -51,12 +51,6 @@ describe("Gameboard general functions", () => {
     expect(() => newGameboard.receiveAttack([0, 1])).toThrow(Error);
   });
 
-  test("Destroy & remove ship from Gameboard", () => {
-    newGameboard.placeShip([0, 1], patrol, "vertical");
-    newGameboard.receiveAttack([0, 1]);
-    newGameboard.receiveAttack([0, 0]);
-    expect(newGameboard.placedShips).not.toContain(patrol);
-  });
   test("Throw error when trying to place two PatrolBoats on the same square", () => {
     const patrol1 = new PatrolBoat();
     const patrol2 = new PatrolBoat();
@@ -65,6 +59,19 @@ describe("Gameboard general functions", () => {
     expect(() => newGameboard.placeShip([0, 1], patrol2, "vertical")).toThrow(
       Error
     );
+  });
+
+  test("Destroy the ship & report winning", () => {
+    newGameboard.placeShip([0, 1], patrol, "vertical");
+    newGameboard.receiveAttack([0, 1]);
+    newGameboard.receiveAttack([0, 0]);
+    expect(newGameboard.winState()).toBeTruthy();
+  });
+
+  test("Ship is still intact, win condition is not met", () => {
+    newGameboard.placeShip([0, 1], patrol, "vertical");
+    newGameboard.receiveAttack([0, 1]);
+    expect(newGameboard.winState()).toBeFalsy();
   });
 });
 

@@ -57,11 +57,6 @@ class Gameboard {
       for (let i = 0; i < ship.coordinates.length; i++) {
         if (ship.coordinates[i][0] === x && ship.coordinates[i][1] === y) {
           ship.currentHits += 1;
-          if (ship.isSunk()) {
-            this.placedShips = this.placedShips.filter((placedShip) => {
-              placedShip !== ship;
-            });
-          }
           return true;
         }
       }
@@ -80,6 +75,16 @@ class Gameboard {
       }
     }
     return false;
+  }
+
+  winState() {
+    let allSink = true;
+    this.placedShips.forEach((ship) => {
+      if (!ship.isSunk()) {
+        allSink = false;
+      }
+    });
+    return allSink;
   }
 }
 
