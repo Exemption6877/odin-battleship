@@ -2,6 +2,7 @@ class Gameboard {
   constructor() {
     this.hits = [];
     this.placedShips = [];
+    this.takenCells = [];
   }
 
   borderCheck(coordinate) {
@@ -11,10 +12,18 @@ class Gameboard {
   // Need to make sure ships have 1 cell in between ships
   // Pass a single cell, output around cells
   // max 4 cells, dont output borderChecked cells
-  #aroundArea(coordinate) {
-    let [x, y] = coordinate;
-
-    // if(this.borderCheck())
+  // -+x -+y
+  #aroundArea(coordinatesArray) {
+    let arr = [];
+    for (let coordinate of coordinatesArray) {
+      let [x, y] = coordinate;
+      arr.push(coordinate);
+      arr.push([x + 1, y], [x - 1, y], [x, y + 1], [x, y - 1]);
+    }
+    arr = arr.filter((element) => this.borderCheck(element));
+    arr.forEach((element) => {
+      this.takenCells.push(element);
+    });
   }
 
   placeShip(coordinate, ship, direction) {
@@ -22,7 +31,10 @@ class Gameboard {
     let fullCoordinates = [];
 
     for (const entry of this.placedShips) {
-      if (this.duplicateCheck(coordinate, entry.coordinates)) {
+      if (
+        this.duplicateCheck(coordinate, entry.coordinates) ||
+        this.#aroundArea(coordinate, this.takenCells)
+      ) {
         throw new Error("Duplicate");
       }
     }
