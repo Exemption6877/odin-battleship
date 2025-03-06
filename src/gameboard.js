@@ -23,6 +23,11 @@ class Gameboard {
   placeShip(coordinate, ship, direction) {
     let [x, y] = coordinate;
     let fullCoordinates = [];
+    for (const entry of this.placedShips) {
+      if (this.duplicateCheck(coordinate, entry.coordinates)) {
+        throw new Error("Duplicate");
+      }
+    }
 
     for (let i = 0; i < ship.length; i++) {
       if (!this.borderCheck([x, y])) {
@@ -44,6 +49,9 @@ class Gameboard {
 
   receiveAttack(coordinate) {
     let [x, y] = coordinate;
+    if (this.duplicateCheck(coordinate, this.hits)) {
+      throw new Error("Duplicate");
+    }
     for (const ship of this.placedShips) {
       for (let i = 0; i < ship.coordinates.length; i++) {
         if (ship.coordinates[i][0] === x && ship.coordinates[i][1] === y) {
@@ -56,11 +64,17 @@ class Gameboard {
     return false;
   }
 
-  // duplicateCheck(pushedCoordinate, savedCoordinate) {
-  //   let [Px, Py] = pushedCoordinate;
-  //   let [Sx, Sy] = savedCoordinate;
+  duplicateCheck(pushedCoordinate, savedCoordinates) {
+    let [Px, Py] = pushedCoordinate;
 
-  // }
+    for (let entry of savedCoordinates) {
+      let [Sx, Sy] = entry;
+      if (Px === Sx && Py === Sy) {
+        return true;
+      }
+    }
+    return false;
+  }
 }
 
 export { Gameboard };

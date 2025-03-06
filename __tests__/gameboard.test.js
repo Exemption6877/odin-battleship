@@ -68,6 +68,16 @@ describe("Gameboard place & attack", () => {
 
   test("Duplicate Attack", () => {
     newGameboard.receiveAttack([0, 1]);
-    expect(newGameboard.receiveAttack([0, 1])).toThrow(Error);
+    expect(() => newGameboard.receiveAttack([0, 1])).toThrow(Error);
+  });
+
+  test("Throw error on the same coordinate", () => {
+    const patrol1 = new PatrolBoat();
+    const patrol2 = new PatrolBoat();
+    newGameboard.placeShip([0, 1], patrol1, "vertical");
+
+    expect(() => newGameboard.placeShip([0, 1], patrol2, "vertical")).toThrow(
+      Error
+    );
   });
 });
