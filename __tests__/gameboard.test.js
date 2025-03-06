@@ -41,6 +41,16 @@ describe("Gameboard general functions", () => {
     patrol = new PatrolBoat();
   });
 
+  test("Error on placing 2 ships too close to each other", () => {
+    const patrol1 = new PatrolBoat();
+    const patrol2 = new PatrolBoat();
+    newGameboard.placeShip([0, 1], patrol1, "vertical");
+
+    expect(() => newGameboard.placeShip([1, 1], patrol2, "vertical")).toThrow(
+      Error
+    );
+  });
+
   test("Miss hit", () => {
     newGameboard.placeShip([0, 1], patrol, "vertical");
     expect(newGameboard.receiveAttack([0, 2])).toBeFalsy();

@@ -8,6 +8,14 @@ class Gameboard {
     const [x, y] = coordinate;
     return x >= 0 && x <= 9 && y >= 0 && y <= 9;
   }
+  // Need to make sure ships have 1 cell in between ships
+  // Pass a single cell, output around cells
+  // max 4 cells, dont output borderChecked cells
+  #aroundArea(coordinate) {
+    let [x, y] = coordinate;
+
+    // if(this.borderCheck())
+  }
 
   placeShip(coordinate, ship, direction) {
     let [x, y] = coordinate;
@@ -87,9 +95,9 @@ y
 8  [~] [~] [~] [~] [~] [~] [~] [~] [~] [~]
 7  [~] [~] [~] [~] [~] [~] [~] [~] [~] [~]
 6  [~] [~] [~] [~] [~] [~] [~] [~] [~] [~]
-5  [~] [~] [~] [~] [~] [~] [~] [~] [~] [~]
-4  [~] [~] [~] [~] [~] [~] [~] [~] [~] [~]
-3  [~] [~] [~] [~] [~] [~] [~] [~] [~] [~]
+5  [~] [~] [~] [~] [o] [~] [~] [~] [~] [~]
+4  [~] [~] [~] [o] [X] [o] [~] [~] [~] [~]
+3  [~] [~] [~] [~] [o] [~] [~] [~] [~] [~]
 2  [~] [~] [~] [~] [~] [~] [~] [~] [~] [~]
 1  [~] [~] [~] [~] [~] [~] [~] [~] [~] [~]
 0  [~] [~] [~] [~] [~] [~] [~] [~] [~] [~]
