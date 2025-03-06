@@ -1,51 +1,11 @@
-class Ship {
-  constructor(length) {
-    this.length = length;
-    this.currentHits = 0;
-    this.coordinates = [];
-  }
-
-  hit() {
-    this.currentHits += 1;
-  }
-  isSunk() {
-    return this.currentHits === this.length;
-  }
-
-  setCoordinate(coordinate) {
-    this.coordinates.push(coordinate);
-  }
-}
-
-class Carrier extends Ship {
-  constructor() {
-    super(5);
-  }
-}
-
-class Battleship extends Ship {
-  constructor() {
-    super(4);
-  }
-}
-
-class Destroyer extends Ship {
-  constructor() {
-    super(3);
-  }
-}
-
-class Submarine extends Ship {
-  constructor() {
-    super(3);
-  }
-}
-
-class PatrolBoat extends Ship {
-  constructor() {
-    super(2);
-  }
-}
+import {
+  Ship,
+  Carrier,
+  Battleship,
+  Destroyer,
+  Submarine,
+  PatrolBoat,
+} from "./ship";
 
 class Gameboard {
   constructor() {
@@ -87,15 +47,23 @@ class Gameboard {
     for (const ship of this.placedShips) {
       for (let i = 0; i < ship.coordinates.length; i++) {
         if (ship.coordinates[i][0] === x && ship.coordinates[i][1] === y) {
-          this.hits.push(coordinate);
           ship.currentHits += 1;
           return true;
         }
       }
     }
+    this.hits.push(coordinate);
     return false;
   }
+
+  // duplicateCheck(pushedCoordinate, savedCoordinate) {
+  //   let [Px, Py] = pushedCoordinate;
+  //   let [Sx, Sy] = savedCoordinate;
+
+  // }
 }
+
+export { Gameboard };
 
 /*
 y
@@ -117,13 +85,3 @@ Destroyer
 Submarine
 PatrolBoat
 */
-
-export {
-  Ship,
-  Carrier,
-  Battleship,
-  Destroyer,
-  Submarine,
-  PatrolBoat,
-  Gameboard,
-};

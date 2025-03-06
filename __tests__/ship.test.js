@@ -1,4 +1,4 @@
-import { Carrier } from "../src";
+import { Carrier } from "../src/ship";
 describe("Ship Class Testing", () => {
   let newShip;
 
@@ -33,6 +33,4 @@ describe("Ship Class Testing", () => {
   });
 });
 
-describe("Ship Coordinate testing", () => {
-    
-})
+describe("Ship Coordinate testing", () => {});

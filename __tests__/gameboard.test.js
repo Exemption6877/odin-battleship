@@ -1,5 +1,5 @@
-import { Carrier, PatrolBoat } from "../src";
-import { Gameboard } from "../src";
+import { Carrier, PatrolBoat } from "../src/ship";
+import { Gameboard } from "../src/gameboard";
 
 describe("Gameboard borderCheck()", () => {
   let newGameboard;
@@ -64,5 +64,10 @@ describe("Gameboard place & attack", () => {
     const patrol = new PatrolBoat();
     newGameboard.placeShip([0, 1], patrol, "vertical");
     expect(newGameboard.receiveAttack([0, 2])).toBeFalsy();
+  });
+
+  test("Duplicate Attack", () => {
+    newGameboard.receiveAttack([0, 1]);
+    expect(newGameboard.receiveAttack([0, 1])).toThrow(Error);
   });
 });
