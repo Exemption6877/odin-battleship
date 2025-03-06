@@ -32,6 +32,42 @@ describe("Gameboard borderCheck()", () => {
   });
 });
 
+describe("Gameboard general functions", () => {
+  let newGameboard;
+  let patrol;
+
+  beforeEach(() => {
+    newGameboard = new Gameboard();
+    patrol = new PatrolBoat();
+  });
+
+  test("Miss hit", () => {
+    newGameboard.placeShip([0, 1], patrol, "vertical");
+    expect(newGameboard.receiveAttack([0, 2])).toBeFalsy();
+  });
+
+  test("Throw error on duplicate attack", () => {
+    newGameboard.receiveAttack([0, 1]);
+    expect(() => newGameboard.receiveAttack([0, 1])).toThrow(Error);
+  });
+
+  test("Destroy & remove ship from Gameboard", () => {
+    newGameboard.placeShip([0, 1], patrol, "vertical");
+    newGameboard.receiveAttack([0, 1]);
+    newGameboard.receiveAttack([0, 0]);
+    expect(newGameboard.placedShips).not.toContain(patrol);
+  });
+  test("Throw error when trying to place two PatrolBoats on the same square", () => {
+    const patrol1 = new PatrolBoat();
+    const patrol2 = new PatrolBoat();
+    newGameboard.placeShip([0, 1], patrol1, "vertical");
+
+    expect(() => newGameboard.placeShip([0, 1], patrol2, "vertical")).toThrow(
+      Error
+    );
+  });
+});
+
 describe("PatrolBoat inside gameboard", () => {
   let newGameboard;
   let patrol;
@@ -67,38 +103,35 @@ describe("PatrolBoat inside gameboard", () => {
   });
 });
 
-describe("Gameboard general functions", () => {
+describe("Test other boat classes", () => {
   let newGameboard;
-  let patrol;
 
   beforeEach(() => {
     newGameboard = new Gameboard();
-    patrol = new PatrolBoat();
   });
 
-  test("Miss hit", () => {
-    newGameboard.placeShip([0, 1], patrol, "vertical");
-    expect(newGameboard.receiveAttack([0, 2])).toBeFalsy();
+  test("Carrier takes 5 cells vertical", () => {
+    const boat = new Carrier();
+
+    newGameboard.placeShip([0, 5], boat, "vertical");
+    expect(boat.coordinates).toEqual([
+      [0, 5],
+      [0, 4],
+      [0, 3],
+      [0, 2],
+      [0, 1],
+    ]);
   });
 
-  test("Throw error on duplicate attack", () => {
-    newGameboard.receiveAttack([0, 1]);
-    expect(() => newGameboard.receiveAttack([0, 1])).toThrow(Error);
-  });
-
-  test("Destroy & remove ship from Gameboard", () => {
-    newGameboard.placeShip([0, 1], patrol, "vertical");
-    newGameboard.receiveAttack([0, 1]);
-    newGameboard.receiveAttack([0, 0]);
-    expect(newGameboard.placedShips).not.toContain(patrol);
-  });
-  test("Throw error when trying to place two PatrolBoats on the same square", () => {
-    const patrol1 = new PatrolBoat();
-    const patrol2 = new PatrolBoat();
-    newGameboard.placeShip([0, 1], patrol1, "vertical");
-
-    expect(() => newGameboard.placeShip([0, 1], patrol2, "vertical")).toThrow(
-      Error
-    );
+  test("Carrier takes 5 cells horizontal", () => {
+    const boat = new Carrier();
+    newGameboard.placeShip([0, 0], boat, "horizontal");
+    expect(boat.coordinates).toEqual([
+      [0, 0],
+      [1, 0],
+      [2, 0],
+      [3, 0],
+      [4, 0],
+    ]);
   });
 });
