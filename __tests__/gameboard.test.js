@@ -80,4 +80,20 @@ describe("Gameboard place & attack", () => {
       Error
     );
   });
+
+  test("Destroy ship", () => {
+    const patrol = new PatrolBoat();
+    newGameboard.placeShip([0, 1], patrol, "vertical");
+    newGameboard.receiveAttack([0, 1]);
+    newGameboard.receiveAttack([0, 0]);
+    expect(patrol.isSunk()).toBeTruthy();
+  });
+
+  test("Destroy & remove ship from Gameboard", () => {
+    const patrol = new PatrolBoat();
+    newGameboard.placeShip([0, 1], patrol, "vertical");
+    newGameboard.receiveAttack([0, 1]);
+    newGameboard.receiveAttack([0, 0]);
+    expect(newGameboard.placedShips).not.toContain(patrol);
+  });
 });
