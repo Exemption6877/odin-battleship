@@ -1,12 +1,3 @@
-import {
-  Ship,
-  Carrier,
-  Battleship,
-  Destroyer,
-  Submarine,
-  PatrolBoat,
-} from "./ship";
-
 class Gameboard {
   constructor() {
     this.hits = [];
@@ -17,8 +8,6 @@ class Gameboard {
     const [x, y] = coordinate;
     return x >= 0 && x <= 9 && y >= 0 && y <= 9;
   }
-
-  // NEED TO IMPLEMENT CHECK FOR SAME COORDS
 
   placeShip(coordinate, ship, direction) {
     let [x, y] = coordinate;
