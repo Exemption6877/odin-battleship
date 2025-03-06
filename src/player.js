@@ -6,6 +6,7 @@ class Player {
 }
 
 class PlayerBot extends Player {
+  // I need to write random move logic for this subclass
   constructor() {
     super();
   }
