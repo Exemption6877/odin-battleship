@@ -30,6 +30,10 @@ describe("Gameboard borderCheck()", () => {
   test("Inside gameboard #2", () => {
     expect(newGameboard.borderCheck([5, 9])).toBeTruthy();
   });
+
+  test("Edge case, on the edge of the gameboard", () => {
+    expect(newGameboard.borderCheck([9, 9])).toBeTruthy();
+  });
 });
 
 describe("Gameboard general functions", () => {
@@ -82,6 +86,14 @@ describe("Gameboard general functions", () => {
     newGameboard.placeShip([0, 1], patrol, "vertical");
     newGameboard.receiveAttack([0, 1]);
     expect(newGameboard.winState()).toBeFalsy();
+  });
+
+  test("Sink ship after multiple attacks", () => {
+    newGameboard.placeShip([0, 1], patrol, "vertical");
+    newGameboard.receiveAttack([0, 1]);
+    expect(newGameboard.winState()).toBeFalsy();
+    newGameboard.receiveAttack([0, 0]);
+    expect(newGameboard.winState()).toBeTruthy();
   });
 });
 
