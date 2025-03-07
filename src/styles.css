@@ -4,6 +4,38 @@ body {
   margin: 0;
 }
 
+:root {
+  font-family: Roboto, "Times New Roman", Times, serif;
+}
+
 body {
   background-color: black;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  justify-content: center;
+}
+
+h1 {
+  color: white;
+  font-size: 3rem;
+}
+
+.greeting {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+#game-start:hover {
+  cursor: pointer;
+}
+
+#game-start {
+  border: 4px solid white;
+  background: none;
+  color: white;
+  font-weight: bold;
+  font-size: 1.5rem;
+  padding: 0.8rem 0.5rem;
 }

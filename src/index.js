@@ -8,3 +8,5 @@ import {
   Submarine,
   PatrolBoat,
 } from "./ship.js";
+
+import "./styles.css";
