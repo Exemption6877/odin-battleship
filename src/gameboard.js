@@ -33,7 +33,7 @@ class Gameboard {
     for (const entry of this.placedShips) {
       if (
         this.duplicateCheck(coordinate, entry.coordinates) ||
-        this.#aroundArea(coordinate, this.takenCells)
+        this.duplicateCheck(coordinate, this.takenCells)
       ) {
         throw new Error("Duplicate");
       }
@@ -50,6 +50,7 @@ class Gameboard {
         x += 1;
       }
     }
+    this.#aroundArea(fullCoordinates);
     fullCoordinates.forEach((coord) => {
       ship.setCoordinate(coord);
     });
