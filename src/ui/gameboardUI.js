@@ -14,8 +14,6 @@ function gameboardRender() {
   const generateCell = (x, y) => {
     const wrapper = document.createElement("td");
     const button = document.createElement("button");
-    // Delete this later
-    button.innerText = `${x},${y}`;
     button.classList.add("cell");
     button.value = `${x},${y}`;
     wrapper.appendChild(button);

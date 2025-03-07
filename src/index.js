@@ -25,7 +25,7 @@ function generateButton() {
       wrapper.classList.add("hidden");
       gameplay().setup();
       const gameboardBlock = document.querySelector(".gameboard");
-      gameboardBlock.append(gameplay().draggableShips());
+      gameboardBlock.append(dragLogic().output());
     });
     return button;
   };
@@ -56,12 +56,8 @@ function generateText() {
   return { placeShips };
 }
 
-function gameplay() {
-  // Notify on actions here
-  const textContainer = document.querySelector(".text-area");
-  const gameboardBlock = document.querySelector(".gameboard");
-
-  const draggableShips = () => {
+function dragLogic() {
+  const output = () => {
     const directionButton = document.createElement("button");
     directionButton.classList.add("direction");
     directionButton.innerText = "Toggle direction";
@@ -84,6 +80,13 @@ function gameplay() {
     dragContainer.appendChild(carrier);
     return dragContainer;
   };
+  return { output };
+}
+
+function gameplay() {
+  // Notify on actions here
+  const textContainer = document.querySelector(".text-area");
+  const gameboardBlock = document.querySelector(".gameboard");
 
   // setup - show a single board, ships container to drag from, let the player to place ships,
   // press confirm to push changes.
@@ -93,7 +96,7 @@ function gameplay() {
     gameboardBlock.appendChild(gameboardRender().generateTable("Your ships"));
   };
 
-  return { draggableShips, setup };
+  return { setup };
 }
 
 const gameStartButton = document.querySelector("#game-start");
