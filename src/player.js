@@ -1,4 +1,5 @@
 import { Gameboard } from "./gameboard";
+
 class Player {
   constructor() {
     this.personalGameboard = new Gameboard();
@@ -15,8 +16,8 @@ class PlayerBot extends Player {
   }
   // on hit, hit adjustened cell next
   // to make the AI even better, I could notify it on isSunk() to not hit obvious dead cells.
-  makeMove(prevHit = false, prevCoord = null) {
-    if (prevHit) {
+  makeMove(prevHit = false, prevCoord = null, shipIsSunk = false) {
+    if (prevHit && !shipIsSunk) {
       const [prevX, prevY] = prevCoord;
       // randomize to choose whether to hit x or y
       if (this.__randomGen(2) === 0) {
