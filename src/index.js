@@ -22,21 +22,23 @@ function generateButton() {
     return button;
   };
 
-  return { playAgainst };
+  const chooseOpponent = (player1, player2) => {
+    const wrapper = document.createElement("div");
+    wrapper.classList.add("choose-opponent");
+    wrapper.append(playAgainst(player1), playAgainst(player2));
+
+    return wrapper;
+  };
+
+  return { chooseOpponent };
 }
 
 const gameStartButton = document.querySelector("#game-start");
 gameStartButton.addEventListener("click", () => {
   const greetingBlock = document.querySelector(".greeting");
   greetingBlock.classList.add("hidden");
-  const chooseOpponent = document.createElement("div");
-  chooseOpponent.classList.add("choose-opponent");
-  chooseOpponent.append(
-    generateButton().playAgainst("Player 1"),
-    generateButton().playAgainst("Bot")
-  );
   const gameboardBlock = document.querySelector(".gameboard");
-  gameboardBlock.append(chooseOpponent);
+  gameboardBlock.append(generateButton().chooseOpponent("player", "bot"));
 });
 
 // const gameboardBlock = document.querySelector(".gameboard");
