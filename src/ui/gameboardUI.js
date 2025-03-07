@@ -22,6 +22,7 @@ function gameboardRender() {
 
     return wrapper;
   };
+
   const generateTable = (player) => {
     const table = document.createElement("table");
     const caption = document.createElement("caption");
@@ -35,6 +36,7 @@ function gameboardRender() {
     table.append(caption, tableBody, generateFooter());
     return table;
   };
+
   const generateFooter = () => {
     const tableFoot = document.createElement("tfoot");
     const footerWrapper = document.createElement("tr");

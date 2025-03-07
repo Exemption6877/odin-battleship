@@ -24,6 +24,8 @@ function generateButton() {
       const wrapper = document.querySelector(".choose-opponent");
       wrapper.classList.add("hidden");
       gameplay().setup();
+      const gameboardBlock = document.querySelector(".gameboard");
+      gameboardBlock.append(gameplay().draggableShips());
     });
     return button;
   };
@@ -59,7 +61,31 @@ function gameplay() {
   const textContainer = document.querySelector(".text-area");
   const gameboardBlock = document.querySelector(".gameboard");
 
-  // setup - show a single board, let the player to place ships,
+  const draggableShips = () => {
+    const directionButton = document.createElement("button");
+    directionButton.classList.add("direction");
+    directionButton.innerText = "Toggle direction";
+
+    const dragContainer = document.createElement("div");
+    dragContainer.classList.add("drag");
+    dragContainer.classList.add("container");
+
+    const carrier = document.createElement("div");
+    carrier.classList.add("ship");
+    for (let i = 0; i < 5; i++) {
+      const cell = document.createElement("div");
+      cell.classList.add("cell");
+      carrier.appendChild(cell);
+    }
+
+    carrier.draggable = "True";
+
+    dragContainer.appendChild(directionButton);
+    dragContainer.appendChild(carrier);
+    return dragContainer;
+  };
+
+  // setup - show a single board, ships container to drag from, let the player to place ships,
   // press confirm to push changes.
 
   const setup = () => {
@@ -67,7 +93,7 @@ function gameplay() {
     gameboardBlock.appendChild(gameboardRender().generateTable("Your ships"));
   };
 
-  return { setup };
+  return { draggableShips, setup };
 }
 
 const gameStartButton = document.querySelector("#game-start");
@@ -83,5 +109,5 @@ const againstButtons = document.querySelectorAll(".btn-choice");
 againstButtons.addEventListener("click", () => {});
 
 // I need setup state, move your ships to desired locations
-
+// Dragging one after another, I need to be able to change ship's direction
 // encapsulate choose player state for convenience if player presses "play again"
