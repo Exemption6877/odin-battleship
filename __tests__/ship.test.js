@@ -31,4 +31,8 @@ describe("Ship Class Testing", () => {
     }
     expect(newShip.isSunk()).toBeFalsy();
   });
+
+  test("Carrier not sunk with zero hits", () => {
+    expect(newShip.isSunk()).toBeFalsy();
+  });
 });

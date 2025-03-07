@@ -10,7 +10,7 @@ class PlayerBot extends Player {
   constructor() {
     super();
   }
-  // on hit, check adjustened cells
+  // on hit, hit adjustened cell next
   makeMove() {}
 }
 
