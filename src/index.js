@@ -23,6 +23,7 @@ function generateButton() {
     button.addEventListener("click", () => {
       const wrapper = document.querySelector(".choose-opponent");
       wrapper.classList.add("hidden");
+      gameplay().setup();
     });
     return button;
   };
@@ -40,12 +41,34 @@ function generateButton() {
   return { chooseOpponent };
 }
 
-// function gameplay() {
-//   // setup - show a single board, let the player to place ships,
-//   // press confirm to push changes.
+function generateText() {
+  const heading = (text) => {
+    const h1 = document.createElement("h1");
+    h1.innerText = text;
+    return h1;
+  };
 
-//   const setup = () => {};
-// }
+  const placeShips = () => {
+    return heading("Drag and drop your ships onto the board");
+  };
+  return { placeShips };
+}
+
+function gameplay() {
+  // Notify on actions here
+  const textContainer = document.querySelector(".text-area");
+  const gameboardBlock = document.querySelector(".gameboard");
+
+  // setup - show a single board, let the player to place ships,
+  // press confirm to push changes.
+
+  const setup = () => {
+    textContainer.appendChild(generateText().placeShips());
+    gameboardBlock.appendChild(gameboardRender().generateTable("Your ships"));
+  };
+
+  return { setup };
+}
 
 const gameStartButton = document.querySelector("#game-start");
 gameStartButton.addEventListener("click", () => {
@@ -61,5 +84,4 @@ againstButtons.addEventListener("click", () => {});
 
 // I need setup state, move your ships to desired locations
 
-// const gameboardBlock = document.querySelector(".gameboard");
-// gameboardBlock.append(gameboardRender().generateTable("Player 1"));
+// encapsulate choose player state for convenience if player presses "play again"
