@@ -77,3 +77,10 @@ table {
 tfoot > * {
   text-align: center;
 }
+
+.gameboard {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}

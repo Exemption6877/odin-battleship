@@ -52,3 +52,5 @@ function gameboardRender() {
 
   return { generateTable };
 }
+
+export default gameboardRender;
