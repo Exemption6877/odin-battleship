@@ -63,7 +63,7 @@ table {
   color: white;
 }
 
-td > button {
+.cell {
   background: none;
   border: 4px solid white;
   height: 2.5rem;
