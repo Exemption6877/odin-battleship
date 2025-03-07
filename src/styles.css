@@ -63,6 +63,10 @@ table {
   color: white;
 }
 
+.cell:hover {
+  cursor: pointer;
+}
+
 .cell {
   background: none;
   border: 4px solid white;

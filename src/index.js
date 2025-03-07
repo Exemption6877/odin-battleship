@@ -16,3 +16,29 @@ gameStartButton.addEventListener("click", () => {
   const greetingBlock = document.querySelector(".greeting");
   greetingBlock.classList.add("hidden");
 });
+
+function gameboardRender() {
+  const generateRow = (y) => {
+    const rowBlock = document.createElement("tr");
+    const rowCounter = document.createElement("th");
+    rowCounter.innerText = `${y}`;
+    rowBlock.appendChild(rowCounter);
+    // I NEED TO TEST ORDER CORRECTNESS
+    for (let i = 0; i <= 9; i++) {
+      rowBlock.appendChild(generateCell(i, y));
+    }
+
+    return rowBlock;
+  };
+  const generateCell = (x, y) => {
+    const wrapper = document.createElement("td");
+    const button = document.createElement("button");
+    // Delete this later
+    button.innerText = `${x},${y}`;
+    button.classList.add("cell");
+    button.value = `${x},${y}`;
+    wrapper.appendChild(button);
+
+    return wrapper;
+  };
+}
