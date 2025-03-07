@@ -12,7 +12,6 @@ import {
 import "./styles.css";
 
 const gameStartButton = document.querySelector("#game-start");
-
 gameStartButton.addEventListener("click", () => {
   const greetingBlock = document.querySelector(".greeting");
   greetingBlock.classList.add("hidden");
