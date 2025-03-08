@@ -57,31 +57,91 @@ function generateText() {
 }
 
 function dragLogic() {
-  const output = () => {
-    const directionButton = document.createElement("button");
-    directionButton.classList.add("direction");
-    directionButton.innerText = "Toggle direction";
-
+  const container = () => {
     const dragContainer = document.createElement("div");
     dragContainer.classList.add("drag");
     dragContainer.classList.add("container");
 
-    const carrier = document.createElement("div");
-    carrier.classList.add("ship");
-    for (let i = 0; i < 5; i++) {
+    return dragContainer;
+  };
+
+  const generateShip = (type) => {
+    let length;
+    switch (type) {
+      case "carrier":
+        length = 5;
+        break;
+      case "battleship":
+        length = 4;
+        break;
+      case "destroyer":
+        length = 3;
+        break;
+      case "submarine":
+        length = 2;
+        break;
+      case "patrol":
+        length = 2;
+        break;
+    }
+    const ship = document.createElement("div");
+    ship.classList.add("ship");
+    for (let i = 0; i < length; i++) {
       const cell = document.createElement("div");
       cell.classList.add("cell");
-      carrier.appendChild(cell);
+      ship.appendChild(cell);
     }
 
-    carrier.draggable = "True";
+    ship.draggable = "True";
 
+    return ship;
+  };
+
+  const shipsArr = () => {
+    const arr = [];
+    arr.push(
+      generateShip("carrier"),
+      generateShip("battleship"),
+      generateShip("destroyer"),
+      generateShip("submarine"),
+      generateShip("patrol")
+    );
+    return arr;
+  };
+
+  const output = () => {
+    const dragContainer = container();
+    const ships = shipsArr();
+    const directionButton = shipDirection();
     dragContainer.appendChild(directionButton);
-    dragContainer.appendChild(carrier);
+
+    ships.forEach((ship) => {
+      dragContainer.appendChild(ship);
+    });
+
     return dragContainer;
   };
   return { output };
 }
+
+const shipDirection = () => {
+  const button = document.createElement("button");
+  button.classList.add("direction");
+  button.innerText = "Vertical";
+  button.value = "vertical";
+
+  button.addEventListener("click", () => {
+    if (button.value === "vertical") {
+      button.innerText = "Horizontal";
+      button.value = "horizontal";
+    } else {
+      button.innerText = "Vertical";
+      button.value = "vertical";
+    }
+  });
+
+  return button;
+};
 
 function gameplay() {
   // Notify on actions here
