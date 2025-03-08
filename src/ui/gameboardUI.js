@@ -1,3 +1,4 @@
+function shipType(type) {}
 function gameboardRender() {
   const generateRow = (y) => {
     const rowBlock = document.createElement("tr");
@@ -16,6 +17,18 @@ function gameboardRender() {
     const button = document.createElement("button");
     button.classList.add("cell");
     button.value = `${x},${y}`;
+
+    // Drag over event
+    button.addEventListener("dragover", (event) => event.preventDefault());
+
+    button.addEventListener("drop", (event) => {
+      event.preventDefault();
+      const shipType = event.dataTransfer.getData("type");
+
+      const droppedShip = document.querySelector(`[data-type="${shipType}"]`);
+
+      droppedShip.classList.add("hidden");
+    });
     wrapper.appendChild(button);
 
     return wrapper;

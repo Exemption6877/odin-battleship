@@ -70,6 +70,9 @@ table {
 }
 
 .cell {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   background: none;
   border: 4px solid white;
   height: 2.5rem;
@@ -112,7 +115,7 @@ tfoot > * {
 
 .drag.container {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   border: 4px solid white;
   align-items: center;
   padding: 2rem;
@@ -141,4 +144,8 @@ tfoot > * {
   background: none;
   height: 25px;
   width: 25px;
+}
+
+.friendly-ship {
+  background-color: rgb(37, 21, 185);
 }

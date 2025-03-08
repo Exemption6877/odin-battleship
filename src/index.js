@@ -92,8 +92,12 @@ function dragLogic() {
       ship.appendChild(cell);
     }
 
-    ship.draggable = "True";
+    ship.setAttribute("draggable", "true");
+    ship.setAttribute("data-type", type);
 
+    ship.addEventListener("dragstart", (event) => {
+      event.dataTransfer.setData("type", type);
+    });
     return ship;
   };
 
