@@ -12,6 +12,8 @@ import {
 import "./styles.css";
 import gameboardRender from "./ui/gameboardUI.js";
 
+// I need to separate some logic to other files to make this one cleaner.
+
 function generateButton() {
   const playAgainst = (player) => {
     const button = document.createElement("button");
@@ -95,7 +97,9 @@ function dragLogic() {
     ship.setAttribute("data-type", type);
 
     ship.addEventListener("dragstart", (event) => {
+      const buttonValue = document.querySelector(".direction").value;
       event.dataTransfer.setData("type", type);
+      event.dataTransfer.setData("direction", buttonValue);
     });
     return ship;
   };

@@ -24,7 +24,11 @@ function gameboardRender() {
     button.addEventListener("drop", (event) => {
       event.preventDefault();
       const shipType = event.dataTransfer.getData("type");
+      const shipDirection = event.dataTransfer.getData("direction");
 
+      //debugging
+      console.log(shipDirection);
+      console.log(shipType);
       const droppedShip = document.querySelector(`[data-type="${shipType}"]`);
 
       droppedShip.classList.add("hidden");
