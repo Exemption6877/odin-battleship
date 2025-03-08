@@ -60,7 +60,6 @@ function dragLogic() {
   const container = () => {
     const dragContainer = document.createElement("div");
     dragContainer.classList.add("drag");
-    dragContainer.classList.add("container");
 
     return dragContainer;
   };
@@ -91,7 +90,7 @@ function dragLogic() {
       cell.classList.add("cell");
       ship.appendChild(cell);
     }
-
+    ship.classList.add("vertical");
     ship.setAttribute("draggable", "true");
     ship.setAttribute("data-type", type);
 
@@ -133,14 +132,30 @@ const shipDirection = () => {
   button.classList.add("direction");
   button.innerText = "Vertical";
   button.value = "vertical";
-
   button.addEventListener("click", () => {
     if (button.value === "vertical") {
+      const ships = document.querySelectorAll(".ship");
       button.innerText = "Horizontal";
       button.value = "horizontal";
+      const container = document.querySelector(".drag");
+
+      container.classList.add("vertical");
+
+      ships.forEach((ship) => {
+        ship.classList.remove("vertical");
+        ship.classList.add("horizontal");
+      });
     } else {
+      const ships = document.querySelectorAll(".ship");
       button.innerText = "Vertical";
       button.value = "vertical";
+      const container = document.querySelector(".drag");
+
+      container.classList.remove("vertical");
+      ships.forEach((ship) => {
+        ship.classList.remove("horizontal");
+        ship.classList.add("vertical");
+      });
     }
   });
 

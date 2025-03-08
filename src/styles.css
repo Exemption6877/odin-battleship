@@ -109,11 +109,7 @@ tfoot > * {
   gap: 1rem;
 }
 
-.hidden {
-  display: none;
-}
-
-.drag.container {
+.drag {
   display: flex;
   flex-direction: row;
   border: 4px solid white;
@@ -125,6 +121,7 @@ tfoot > * {
 .direction:hover {
   cursor: pointer;
 }
+
 .direction {
   border: 4px solid white;
   background: none;
@@ -134,18 +131,22 @@ tfoot > * {
   padding: 0.8rem 0.5rem;
 }
 
-.carrier {
+.friendly-ship {
+  background-color: rgb(37, 21, 185);
+}
+
+.ship {
   display: flex;
+}
+
+.vertical {
+  flex-direction: column;
+}
+
+.horizontal {
   flex-direction: row;
 }
 
-.carrier > .cell {
-  border: 2px solid white;
-  background: none;
-  height: 25px;
-  width: 25px;
-}
-
-.friendly-ship {
-  background-color: rgb(37, 21, 185);
+.hidden {
+  display: none;
 }
