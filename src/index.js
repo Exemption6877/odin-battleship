@@ -25,7 +25,9 @@ function generateButton() {
     button.addEventListener("click", () => {
       const wrapper = document.querySelector(".choose-opponent");
       wrapper.classList.add("hidden");
+
       gameplay().setup();
+
       const gameboardBlock = document.querySelector(".gameboard");
       gameboardBlock.append(dragLogic().output());
     });
@@ -171,15 +173,26 @@ function gameplay() {
   const textContainer = document.querySelector(".text-area");
   const gameboardBlock = document.querySelector(".gameboard");
 
+  const createPlayer = (name) => {
+    return name === "player" ? new Player() : new PlayerBot();
+  };
   // setup - show a single board, ships container to drag from, let the player to place ships,
   // press confirm to push changes.
+
+  // TODO: come up with a better idea of storing these
+  const players = (p1, p2) => {
+    const player1 = createPlayer(p1);
+    const player2 = createPlayer(p2);
+
+    return [player1, player2];
+  };
 
   const setup = () => {
     textContainer.appendChild(generateText().placeShips());
     gameboardBlock.appendChild(gameboardRender().generateTable("Your ships"));
   };
 
-  return { setup };
+  return { createPlayer, setup };
 }
 
 const gameStartButton = document.querySelector("#game-start");

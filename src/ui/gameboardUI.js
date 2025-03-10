@@ -1,3 +1,5 @@
+import { Gameboard } from "../gameboard.js";
+
 function shipType(type) {}
 function gameboardRender() {
   const generateRow = (y) => {
@@ -23,14 +25,27 @@ function gameboardRender() {
 
     button.addEventListener("drop", (event) => {
       event.preventDefault();
+
       const shipType = event.dataTransfer.getData("type");
       const shipDirection = event.dataTransfer.getData("direction");
 
+      const coordinates = [button.value[0], button.value[1]];
       //debugging
       console.log(shipDirection);
       console.log(shipType);
-      const droppedShip = document.querySelector(`[data-type="${shipType}"]`);
 
+      console.log(Gameboard.outputPlacedShips());
+
+      player1.personalGameboard.placeShip()
+
+
+      // need some logic to verify correctness of ship's position
+      // if (Gameboard().placeShip(coordinates, shipType, shipDirection)) {
+      //   console.log("successful");
+      //   // console.log(Gameboard.outputPlacedShips());
+      // }
+      //hide dropped ship
+      const droppedShip = document.querySelector(`[data-type="${shipType}"]`);
       droppedShip.classList.add("hidden");
     });
     wrapper.appendChild(button);

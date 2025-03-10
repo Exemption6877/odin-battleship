@@ -8,6 +8,8 @@ class Player {
 
 class PlayerBot extends Player {
   // I need to write random move logic for this subclass
+
+  // TODO: create a randomized gameboard with ships.
   constructor() {
     super();
   }

@@ -50,9 +50,7 @@ describe("Gameboard general functions", () => {
     const patrol2 = new PatrolBoat();
     newGameboard.placeShip([0, 1], patrol1, "vertical");
 
-    expect(() => newGameboard.placeShip([1, 1], patrol2, "vertical")).toThrow(
-      Error
-    );
+    expect(newGameboard.placeShip([1, 1], patrol2, "vertical")).toBeFalsy();
   });
 
   test("Miss hit", () => {
@@ -70,9 +68,7 @@ describe("Gameboard general functions", () => {
     const patrol2 = new PatrolBoat();
     newGameboard.placeShip([0, 1], patrol1, "vertical");
 
-    expect(() => newGameboard.placeShip([0, 1], patrol2, "vertical")).toThrow(
-      Error
-    );
+    expect(newGameboard.placeShip([0, 1], patrol2, "vertical")).toBeFalsy();
   });
 
   test("Destroy the ship & report winning", () => {

@@ -35,13 +35,13 @@ class Gameboard {
         this.duplicateCheck(coordinate, entry.coordinates) ||
         this.duplicateCheck(coordinate, this.takenCells)
       ) {
-        throw new Error("Duplicate");
+        return false;
       }
     }
 
     for (let i = 0; i < ship.length; i++) {
       if (!this.borderCheck([x, y])) {
-        throw new Error("Tail out of bounds");
+        return false;
       }
       fullCoordinates.push([x, y]);
       if (direction === "vertical") {
@@ -56,6 +56,7 @@ class Gameboard {
     });
 
     this.placedShips.push(ship);
+    return true;
   }
 
   receiveAttack(coordinate) {
