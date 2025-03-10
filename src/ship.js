@@ -37,7 +37,7 @@ class Destroyer extends Ship {
 
 class Submarine extends Ship {
   constructor() {
-    super(3);
+    super(2);
   }
 }
 

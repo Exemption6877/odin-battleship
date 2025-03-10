@@ -70,20 +70,26 @@ function dragLogic() {
 
   const generateShip = (type) => {
     let length;
+    let shipClass;
     switch (type) {
       case "carrier":
+        shipClass = new Carrier();
         length = 5;
         break;
       case "battleship":
+        shipClass = new Battleship();
         length = 4;
         break;
       case "destroyer":
+        shipClass = new Destroyer();
         length = 3;
         break;
       case "submarine":
+        shipClass = new Submarine();
         length = 2;
         break;
       case "patrol":
+        shipClass = new PatrolBoat();
         length = 2;
         break;
     }
@@ -102,6 +108,13 @@ function dragLogic() {
       const buttonValue = document.querySelector(".direction").value;
       event.dataTransfer.setData("type", type);
       event.dataTransfer.setData("direction", buttonValue);
+
+      // Hardcode players - bot for now.
+      // TODO: change it.
+      event.dataTransfer.setData(
+        "players",
+        JSON.stringify(gameplay().players("player", "bot"))
+      );
     });
     return ship;
   };
@@ -184,7 +197,7 @@ function gameplay() {
     const player1 = createPlayer(p1);
     const player2 = createPlayer(p2);
 
-    return [player1, player2];
+    return { player1, player2 };
   };
 
   const setup = () => {
@@ -192,7 +205,7 @@ function gameplay() {
     gameboardBlock.appendChild(gameboardRender().generateTable("Your ships"));
   };
 
-  return { createPlayer, setup };
+  return { players, setup };
 }
 
 const gameStartButton = document.querySelector("#game-start");

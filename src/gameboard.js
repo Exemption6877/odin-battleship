@@ -1,3 +1,11 @@
+import {
+  Carrier,
+  Battleship,
+  Destroyer,
+  Submarine,
+  PatrolBoat,
+} from "./ship.js";
+
 class Gameboard {
   constructor() {
     this.hits = [];
@@ -56,7 +64,7 @@ class Gameboard {
     });
 
     this.placedShips.push(ship);
-    return true;
+    return fullCoordinates;
   }
 
   receiveAttack(coordinate) {
