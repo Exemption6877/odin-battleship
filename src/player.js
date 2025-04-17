@@ -1,21 +1,58 @@
 import { Gameboard } from "./gameboard.js";
+import {
+  Carrier,
+  Battleship,
+  Destroyer,
+  Submarine,
+  PatrolBoat,
+} from "./ship.js";
 
 class Player {
   constructor() {
     this.personalGameboard = new Gameboard();
   }
+
+  callGameboard() {
+    return this.personalGameboard;
+  }
 }
 
 class PlayerBot extends Player {
-  // I need to write random move logic for this subclass
-
-  // TODO: create a randomized gameboard with ships.
   constructor() {
     super();
   }
+
   __randomGen(num) {
     return Math.floor(Math.random() * num);
   }
+  __randomDirection() {
+    return this.__randomGen(2) === 0 ? "vertical" : "horizontal";
+  }
+
+  generateGameboard() {
+    const ships = [
+      new Carrier(),
+      new Battleship(),
+      new Destroyer(),
+      new Submarine(),
+      new PatrolBoat(),
+    ];
+    let placedCount = 0;
+
+    while (placedCount < ships.length) {
+      const x = this.__randomGen(9);
+      const y = this.__randomGen(9);
+      const direction = this.__randomDirection();
+      const type = ships[placedCount];
+
+      const result = this.personalGameboard.placeShip([x, y], type, direction);
+
+      if (result !== false) {
+        placedCount++;
+      }
+    }
+  }
+
   // on hit, hit adjustened cell next
   // to make the AI even better, I could notify it on isSunk() to not hit obvious dead cells.
   makeMove(prevHit = false, prevCoord = null, shipIsSunk = false) {

@@ -32,5 +32,12 @@ describe("Player gameboard tests", () => {
 
       bot.__randomGen = originalRandomGen;
     });
+
+    test("PlayerBot creates a gameboard with 5 ships", () => {
+      const bot = new PlayerBot();
+      bot.generateGameboard();
+
+      expect(bot.personalGameboard.placedShips.length).toBe(5);
+    });
   });
 });
