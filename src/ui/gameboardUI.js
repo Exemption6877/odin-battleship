@@ -12,6 +12,7 @@ function dragoverEvent(event) {
 }
 
 function gameboardRender() {
+  // obfuscate it later
   const takenCells = [];
 
   const generateRow = (y) => {
@@ -67,7 +68,7 @@ function gameboardRender() {
       const ship = __detectShipClass(shipType);
 
       const notFilled = document.querySelectorAll(
-        ".gameboard-cell:not(.friendly-ship)"
+        ".gameboard-cell:not(.friendly-ship):not(.adjusted-cell)"
       );
       const cellsToFill = new Gameboard().placeShip(
         coordinates,
@@ -76,12 +77,18 @@ function gameboardRender() {
       );
 
       function takenCheck() {
+        if (!Array.isArray(cellsToFill) || cellsToFill.length === 0) {
+          return false;
+        }
+
         for (let cellToFill of cellsToFill) {
+          const [x, y] = cellToFill;
+          if (x < 0 || x > 9 || y < 0 || y > 9) {
+            return false;
+          }
+
           for (let takenCell of takenCells) {
-            if (
-              cellToFill[0] === takenCell[0] &&
-              cellToFill[1] === takenCell[1]
-            ) {
+            if (x === takenCell[0] && y === takenCell[1]) {
               return false;
             }
           }
@@ -98,10 +105,27 @@ function gameboardRender() {
             cellCoord = cellCoord.map((coord) => parseInt(coord));
 
             if (cellCoord[0] === coord[0] && cellCoord[1] === coord[1]) {
+              const aroundCells = new Gameboard().aroundArea([cellCoord]);
               takenCells.push(cellCoord);
-              console.log(cellCoord);
               cell.classList.add("friendly-ship");
               cell.removeEventListener("dragover", dragoverEvent);
+
+              aroundCells.forEach((aroundCoord) => {
+                for (let randomCell of notFilled) {
+                  let randomCoordinate = randomCell.value.split(" ");
+                  randomCoordinate = randomCoordinate.map((coord) =>
+                    parseInt(coord)
+                  );
+                  if (
+                    randomCoordinate[0] === aroundCoord[0] &&
+                    randomCoordinate[1] === aroundCoord[1] &&
+                    !randomCell.classList.contains("friendly-ship")
+                  ) {
+                    takenCells.push(randomCoordinate);
+                    randomCell.classList.add("adjusted-cell");
+                  }
+                }
+              });
             }
           }
         });

@@ -32,6 +32,8 @@ class Gameboard {
     arr.forEach((element) => {
       this.takenCells.push(element);
     });
+    // DELETE IF IT CAUSES ISSUES!
+    return arr;
   }
 
   placeShip(coordinate, ship, direction) {
