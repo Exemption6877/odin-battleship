@@ -21,7 +21,7 @@ class Gameboard {
   // Pass a single cell, output around cells
   // max 4 cells, dont output borderChecked cells
   // -+x -+y
-  #aroundArea(coordinatesArray) {
+  aroundArea(coordinatesArray) {
     let arr = [];
     for (let coordinate of coordinatesArray) {
       let [x, y] = coordinate;
@@ -58,7 +58,7 @@ class Gameboard {
         x += 1;
       }
     }
-    this.#aroundArea(fullCoordinates);
+    this.aroundArea(fullCoordinates);
     fullCoordinates.forEach((coord) => {
       ship.setCoordinate(coord);
     });

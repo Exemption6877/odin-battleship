@@ -7,8 +7,13 @@ import {
   PatrolBoat,
 } from "../ship.js";
 
-function shipType(type) {}
+function dragoverEvent(event) {
+  event.preventDefault();
+}
+
 function gameboardRender() {
+  const takenCells = [];
+
   const generateRow = (y) => {
     const rowBlock = document.createElement("tr");
     const rowCounter = document.createElement("th");
@@ -26,8 +31,10 @@ function gameboardRender() {
       switch (string) {
         case "carrier":
           return new Carrier();
+
         case "battleship":
           return new Battleship();
+
         case "destroyer":
           return new Destroyer();
 
@@ -45,9 +52,7 @@ function gameboardRender() {
     button.value = `${x} ${y}`;
 
     // Drag over event
-    const dragoverEvent = (event) => {
-      event.preventDefault();
-    };
+
     button.addEventListener("dragover", dragoverEvent);
 
     button.addEventListener("drop", (event) => {
@@ -60,44 +65,53 @@ function gameboardRender() {
       coordinates = coordinates.map((coord) => parseInt(coord));
 
       const ship = __detectShipClass(shipType);
-      console.log(coordinates);
-      // const players = event.dataTransfer.getData("players");
-      //debugging
-      console.log(shipDirection);
-      console.log(ship);
 
-      const allCells = document.querySelectorAll(".gameboard-cell");
+      const notFilled = document.querySelectorAll(
+        ".gameboard-cell:not(.friendly-ship)"
+      );
       const cellsToFill = new Gameboard().placeShip(
         coordinates,
         ship,
         shipDirection
       );
-      allCells.forEach((cell) => {
-        for (let coord of cellsToFill) {
-          let cellCoord = cell.value.split(" ");
-          cellCoord = cellCoord.map((coord) => parseInt(coord));
-          if (cellCoord[0] === coord[0] && cellCoord[1] === coord[1]) {
-            if (!cell.classList.contains("friendly-ship")) {
-              cell.classList.add("friendly-ship");
-              cell.innerText = "O";
-              cell.removeEventListener("dragover", dragoverEvent);
-              console.log(cell);
+
+      function takenCheck() {
+        for (let cellToFill of cellsToFill) {
+          for (let takenCell of takenCells) {
+            if (
+              cellToFill[0] === takenCell[0] &&
+              cellToFill[1] === takenCell[1]
+            ) {
+              return false;
             }
           }
         }
-      });
-      // Add a class that will indicate that cell's taken,
-      // do not allow drag'n'drop other ships on this basis.
-      // disable dragover on this occasion for multiple taken cells.
+        return true;
+      }
 
-      // need some logic to verify correctness of ship's position
-      // if (Gameboard().placeShip(coordinates, shipType, shipDirection)) {
-      //   console.log("successful");
-      //   // console.log(Gameboard.outputPlacedShips());
-      // }
-      //hide dropped ship
-      const droppedShip = document.querySelector(`[data-type="${shipType}"]`);
-      droppedShip.classList.add("hidden");
+      const notTaken = takenCheck();
+
+      if (notTaken) {
+        notFilled.forEach((cell) => {
+          for (let coord of cellsToFill) {
+            let cellCoord = cell.value.split(" ");
+            cellCoord = cellCoord.map((coord) => parseInt(coord));
+
+            if (cellCoord[0] === coord[0] && cellCoord[1] === coord[1]) {
+              takenCells.push(cellCoord);
+              console.log(cellCoord);
+              cell.classList.add("friendly-ship");
+              cell.removeEventListener("dragover", dragoverEvent);
+            }
+          }
+        });
+
+        //hide dropped ship
+        const droppedShip = document.querySelector(`[data-type="${shipType}"]`);
+        droppedShip.classList.add("hidden");
+      } else {
+        console.log("Cannot place the ship: some cells are already taken.");
+      }
     });
     wrapper.appendChild(button);
 
