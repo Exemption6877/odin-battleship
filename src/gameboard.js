@@ -17,25 +17,18 @@ class Gameboard {
     const [x, y] = coordinate;
     return x >= 0 && x <= 9 && y >= 0 && y <= 9;
   }
-  // Need to make sure ships have 1 cell in between ships
-  // Pass a single cell, output around cells
-  // max 4 cells, dont output borderChecked cells
-  // -+x -+y
+
   aroundArea(coordinatesArray) {
     let arr = [];
     for (let coordinate of coordinatesArray) {
-      // need diagonals as well perhaps? need to know first and last cords
       let [x, y] = coordinate;
       arr.push(coordinate);
       arr.push([x + 1, y], [x - 1, y], [x, y + 1], [x, y - 1]);
-      //diagonals
-      // arr.push([x - 1, y + 1], [x + 1, y + 1], [x - 1, y - 1], [x + 1, y - 1]);
     }
     arr = arr.filter((element) => this.borderCheck(element));
     arr.forEach((element) => {
       this.takenCells.push(element);
     });
-    // DELETE IF IT CAUSES ISSUES!
     return arr;
   }
 
@@ -142,7 +135,6 @@ class Gameboard {
 export { Gameboard };
 
 /*
-I should implement a feature to make neighbouring cells unsettable.
 
 y
 9  [~] [~] [~] [~] [~] [~] [~] [~] [~] [~]
@@ -157,9 +149,4 @@ y
 0  [~] [~] [~] [~] [~] [~] [o] [o] [o] [o]
     0   1   2   3   4   5   6   7   8   9 x
 
-Carrier
-Battleship
-Destroyer
-Submarine
-PatrolBoat
 */

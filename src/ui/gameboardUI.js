@@ -6,21 +6,17 @@ import {
   Submarine,
   PatrolBoat,
 } from "../ship.js";
-
-function dragoverEvent(event) {
-  event.preventDefault();
-}
+import { dragoverEvent, onAllShipsPlaced } from "./dragFunctions.js";
 
 function gameboardRender() {
-  // obfuscate it later
   const takenCells = [];
+  const placedShips = [];
 
   const generateRow = (y) => {
     const rowBlock = document.createElement("tr");
     const rowCounter = document.createElement("th");
     rowCounter.innerText = `${y}`;
     rowBlock.appendChild(rowCounter);
-    // I NEED TO TEST ORDER CORRECTNESS
     for (let i = 0; i <= 9; i++) {
       rowBlock.appendChild(generateCell(i, y));
     }
@@ -64,8 +60,8 @@ function gameboardRender() {
 
       let coordinates = button.value.split(" ");
       coordinates = coordinates.map((coord) => parseInt(coord));
-
       const ship = __detectShipClass(shipType);
+      console.log(coordinates, shipType, shipDirection);
 
       const notFilled = document.querySelectorAll(
         ".gameboard-cell:not(.friendly-ship):not(.adjusted-cell)"
@@ -141,6 +137,7 @@ function gameboardRender() {
                       takenCells.push([lx + 1, ly - 1]);
                       takenCells.push([lx + 1, ly + 1]);
                     }
+
                     takenCells.forEach((takenCoordinate) => {
                       notFilled.forEach((randomCell) => {
                         let randomCoordinate = randomCell.value.split(" ");
@@ -172,6 +169,8 @@ function gameboardRender() {
       } else {
         console.log("Cannot place the ship: some cells are already taken.");
       }
+
+      onAllShipsPlaced();
     });
     wrapper.appendChild(button);
 

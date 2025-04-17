@@ -8,11 +8,8 @@ import {
   Submarine,
   PatrolBoat,
 } from "./ship.js";
-// might move above imports to another file
 import "./styles.css";
 import gameboardRender from "./ui/gameboardUI.js";
-
-// I need to separate some logic to other files to make this one cleaner.
 
 function generateButton() {
   const playAgainst = (player) => {
@@ -20,7 +17,6 @@ function generateButton() {
     button.classList.add("btn-choice");
     button.innerText = `Play against ${player}`;
     button.value = player;
-    //event listener here?
 
     button.addEventListener("click", () => {
       const wrapper = document.querySelector(".choose-opponent");
@@ -29,7 +25,7 @@ function generateButton() {
       gameplay().setup();
 
       const gameboardBlock = document.querySelector(".gameboard");
-      gameboardBlock.append(dragLogic().output());
+      gameboardBlock.append(shipDragContainer().output());
     });
     return button;
   };
@@ -44,7 +40,14 @@ function generateButton() {
     return wrapper;
   };
 
-  return { chooseOpponent };
+  const startGame = () => {
+    const button = document.createElement("button");
+    button.classList.add("btn-choice");
+    button.classList.add("hidden");
+    button.innerText = "Start Game!";
+  };
+
+  return { chooseOpponent, startGame };
 }
 
 function generateText() {
@@ -60,7 +63,7 @@ function generateText() {
   return { placeShips };
 }
 
-function dragLogic() {
+function shipDragContainer() {
   const container = () => {
     const dragContainer = document.createElement("div");
     dragContainer.classList.add("drag");
@@ -148,12 +151,15 @@ function dragLogic() {
 
 const shipDirection = () => {
   const button = document.createElement("button");
+
   button.classList.add("direction");
   button.innerText = "Vertical";
   button.value = "vertical";
+
   button.addEventListener("click", () => {
+    const ships = document.querySelectorAll(".ship");
+
     if (button.value === "vertical") {
-      const ships = document.querySelectorAll(".ship");
       button.innerText = "Horizontal";
       button.value = "horizontal";
       const container = document.querySelector(".drag");
@@ -165,7 +171,6 @@ const shipDirection = () => {
         ship.classList.add("horizontal");
       });
     } else {
-      const ships = document.querySelectorAll(".ship");
       button.innerText = "Vertical";
       button.value = "vertical";
       const container = document.querySelector(".drag");
@@ -189,10 +194,7 @@ function gameplay() {
   const createPlayer = (name) => {
     return name === "player" ? new Player() : new PlayerBot();
   };
-  // setup - show a single board, ships container to drag from, let the player to place ships,
-  // press confirm to push changes.
 
-  // TODO: come up with a better idea of storing these
   const players = (p1, p2) => {
     const player1 = createPlayer(p1);
     const player2 = createPlayer(p2);
@@ -220,6 +222,4 @@ gameStartButton.addEventListener("click", () => {
 const againstButtons = document.querySelectorAll(".btn-choice");
 againstButtons.addEventListener("click", () => {});
 
-// I need setup state, move your ships to desired locations
-// Dragging one after another, I need to be able to change ship's direction
-// encapsulate choose player state for convenience if player presses "play again"
+export default generateButton;
