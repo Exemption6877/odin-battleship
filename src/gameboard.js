@@ -24,9 +24,12 @@ class Gameboard {
   aroundArea(coordinatesArray) {
     let arr = [];
     for (let coordinate of coordinatesArray) {
+      // need diagonals as well perhaps? need to know first and last cords
       let [x, y] = coordinate;
       arr.push(coordinate);
       arr.push([x + 1, y], [x - 1, y], [x, y + 1], [x, y - 1]);
+      //diagonals
+      arr.push([x - 1, y + 1], [x + 1, y + 1], [x - 1, y - 1], [x + 1, y - 1]);
     }
     arr = arr.filter((element) => this.borderCheck(element));
     arr.forEach((element) => {
