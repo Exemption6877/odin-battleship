@@ -47,9 +47,12 @@ function generateButton() {
 
   const startGame = () => {
     const button = document.createElement("button");
+    button.classList.add("start-game");
     button.classList.add("btn-choice");
     button.classList.add("hidden");
     button.innerText = "Start Game!";
+
+    return button;
   };
 
   return { chooseOpponent, startGame };
@@ -144,6 +147,7 @@ function shipDragContainer() {
     const ships = shipsArr();
     const directionButton = shipDirection();
     dragContainer.appendChild(directionButton);
+    dragContainer.appendChild(generateButton().startGame());
 
     ships.forEach((ship) => {
       dragContainer.appendChild(ship);

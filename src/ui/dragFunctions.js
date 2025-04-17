@@ -9,6 +9,8 @@ function onAllShipsPlaced() {
   if (hiddenShips.length >= 5) {
     const directionButton = document.querySelector(".direction");
     directionButton.classList.add("hidden");
+    const startGameButton = document.querySelector(".start-game");
+    startGameButton.classList.remove("hidden");
   }
 }
 
