@@ -29,7 +29,7 @@ class Gameboard {
       arr.push(coordinate);
       arr.push([x + 1, y], [x - 1, y], [x, y + 1], [x, y - 1]);
       //diagonals
-      arr.push([x - 1, y + 1], [x + 1, y + 1], [x - 1, y - 1], [x + 1, y - 1]);
+      // arr.push([x - 1, y + 1], [x + 1, y + 1], [x - 1, y - 1], [x + 1, y - 1]);
     }
     arr = arr.filter((element) => this.borderCheck(element));
     arr.forEach((element) => {
@@ -56,6 +56,7 @@ class Gameboard {
       if (!this.borderCheck([x, y])) {
         return false;
       }
+
       fullCoordinates.push([x, y]);
       if (direction === "vertical") {
         y -= 1;
@@ -63,6 +64,32 @@ class Gameboard {
         x += 1;
       }
     }
+
+    const [fx, fy] = fullCoordinates.at(0);
+    const [lx, ly] = fullCoordinates.at(-1);
+
+    if (direction === "vertical") {
+      if (this.borderCheck([fx - 1, fy + 1]))
+        this.takenCells.push([fx - 1, fy + 1]);
+      if (this.borderCheck([fx + 1, fy + 1]))
+        this.takenCells.push([fx + 1, fy + 1]);
+
+      if (this.borderCheck([lx - 1, ly - 1]))
+        this.takenCells.push([lx - 1, ly - 1]);
+      if (this.borderCheck([lx + 1, ly - 1]))
+        this.takenCells.push([lx + 1, ly - 1]);
+    } else {
+      if (this.borderCheck([fx - 1, fy - 1]))
+        this.takenCells.push([fx - 1, fy - 1]);
+      if (this.borderCheck([fx - 1, fy + 1]))
+        this.takenCells.push([fx - 1, fy + 1]);
+
+      if (this.borderCheck([lx + 1, ly - 1]))
+        this.takenCells.push([lx + 1, ly - 1]);
+      if (this.borderCheck([lx + 1, ly + 1]))
+        this.takenCells.push([lx + 1, ly + 1]);
+    }
+
     this.aroundArea(fullCoordinates);
     fullCoordinates.forEach((coord) => {
       ship.setCoordinate(coord);
