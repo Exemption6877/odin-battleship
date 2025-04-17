@@ -123,6 +123,42 @@ function gameboardRender() {
                   ) {
                     takenCells.push(randomCoordinate);
                     randomCell.classList.add("adjusted-cell");
+                    randomCell.removeEventListener("dragover", dragoverEvent);
+
+                    const [fx, fy] = cellsToFill.at(0);
+                    const [lx, ly] = cellsToFill.at(-1);
+
+                    if (shipDirection === "vertical") {
+                      takenCells.push([fx - 1, fy + 1]);
+                      takenCells.push([fx + 1, fy + 1]);
+
+                      takenCells.push([lx - 1, ly - 1]);
+                      takenCells.push([lx + 1, ly - 1]);
+                    } else {
+                      takenCells.push([fx - 1, fy - 1]);
+                      takenCells.push([fx - 1, fy + 1]);
+
+                      takenCells.push([lx + 1, ly - 1]);
+                      takenCells.push([lx + 1, ly + 1]);
+                    }
+                    takenCells.forEach((takenCoordinate) => {
+                      notFilled.forEach((randomCell) => {
+                        let randomCoordinate = randomCell.value.split(" ");
+                        randomCoordinate = randomCoordinate.map((coord) =>
+                          parseInt(coord)
+                        );
+
+                        if (
+                          randomCoordinate[0] === takenCoordinate[0] &&
+                          randomCoordinate[1] === takenCoordinate[1]
+                        ) {
+                          randomCell.removeEventListener(
+                            "dragover",
+                            dragoverEvent
+                          );
+                        }
+                      });
+                    });
                   }
                 }
               });
