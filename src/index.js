@@ -22,6 +22,11 @@ function generateButton() {
       const wrapper = document.querySelector(".choose-opponent");
       wrapper.classList.add("hidden");
 
+      if (button.value === "bot") {
+        gameplay().players("player", "bot");
+        console.log(gameplay().players("player", "bot"));
+      }
+
       gameplay().setup();
 
       const gameboardBlock = document.querySelector(".gameboard");
@@ -192,7 +197,13 @@ function gameplay() {
   const gameboardBlock = document.querySelector(".gameboard");
 
   const createPlayer = (name) => {
-    return name === "player" ? new Player() : new PlayerBot();
+    const player = name === "player" ? new Player() : new PlayerBot();
+
+    if (player instanceof PlayerBot) {
+      player.generateGameboard();
+    }
+
+    return player;
   };
 
   const players = (p1, p2) => {
