@@ -61,11 +61,41 @@ function generateButton() {
 }
 
 function shipDragContainer() {
-  const container = () => {
-    const dragContainer = document.createElement("div");
-    dragContainer.classList.add("drag");
+  // should refactor this
+  const shipDirectionChanger = () => {
+    const button = document.createElement("button");
+    button.classList.add("direction");
+    button.innerText = "Vertical";
+    button.value = "vertical";
 
-    return dragContainer;
+    button.addEventListener("click", () => {
+      const ships = document.querySelectorAll(".ship");
+
+      if (button.value === "vertical") {
+        button.innerText = "Horizontal";
+        button.value = "horizontal";
+        const container = document.querySelector(".drag");
+
+        container.classList.add("vertical");
+
+        ships.forEach((ship) => {
+          ship.classList.remove("vertical");
+          ship.classList.add("horizontal");
+        });
+      } else {
+        button.innerText = "Vertical";
+        button.value = "vertical";
+        const container = document.querySelector(".drag");
+
+        container.classList.remove("vertical");
+        ships.forEach((ship) => {
+          ship.classList.remove("horizontal");
+          ship.classList.add("vertical");
+        });
+      }
+    });
+
+    return button;
   };
 
   const getShipClass = (type) => {
@@ -115,9 +145,10 @@ function shipDragContainer() {
   };
 
   const output = () => {
-    const dragContainer = container();
+    const dragContainer = document.createElement("div");
+    dragContainer.classList.add("drag");
     const ships = shipsArr();
-    const directionButton = shipDirection();
+    const directionButton = shipDirectionChanger();
     dragContainer.appendChild(directionButton);
     dragContainer.appendChild(generateButton().startGame());
 
@@ -129,42 +160,6 @@ function shipDragContainer() {
   };
   return { output };
 }
-
-const shipDirection = () => {
-  const button = document.createElement("button");
-  button.classList.add("direction");
-  button.innerText = "Vertical";
-  button.value = "vertical";
-
-  button.addEventListener("click", () => {
-    const ships = document.querySelectorAll(".ship");
-
-    if (button.value === "vertical") {
-      button.innerText = "Horizontal";
-      button.value = "horizontal";
-      const container = document.querySelector(".drag");
-
-      container.classList.add("vertical");
-
-      ships.forEach((ship) => {
-        ship.classList.remove("vertical");
-        ship.classList.add("horizontal");
-      });
-    } else {
-      button.innerText = "Vertical";
-      button.value = "vertical";
-      const container = document.querySelector(".drag");
-
-      container.classList.remove("vertical");
-      ships.forEach((ship) => {
-        ship.classList.remove("horizontal");
-        ship.classList.add("vertical");
-      });
-    }
-  });
-
-  return button;
-};
 
 function gameplay() {
   // Notify on actions here
