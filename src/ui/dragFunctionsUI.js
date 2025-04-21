@@ -91,7 +91,7 @@ function shipDragContainer() {
     );
     return arr;
   };
-
+  // Might need to refactor it according to gameplay() changes.
   const startGameButton = () => {
     const button = document.createElement("button");
     button.classList.add("start-game");
