@@ -10,3 +10,5 @@ gameStartButton.addEventListener("click", () => {
   const gameboardContainer = document.querySelector(".gameboard");
   gameboardContainer.append(gameplay().chooseOpponentButtons());
 });
+
+const game = gameplay();

@@ -6,7 +6,6 @@ import {
   Submarine,
   PatrolBoat,
 } from "../ship.js";
-import gameplay from "../gameplay.js";
 
 function shipDragContainer() {
   // should refactor this
@@ -92,6 +91,7 @@ function shipDragContainer() {
     return arr;
   };
   // Might need to refactor it according to gameplay() changes.
+  // If player2 === "player", start placing boats for 2nd non-bot player.
   const startGameButton = () => {
     const button = document.createElement("button");
     button.classList.add("start-game");
