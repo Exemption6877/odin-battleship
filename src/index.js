@@ -10,6 +10,7 @@ import {
 } from "./ship.js";
 import "./styles.css";
 import gameboardRender from "./ui/gameboardUI.js";
+import { dragStartEvent } from "./ui/dragFunctions.js";
 
 function generateButton() {
   const playAgainst = (player) => {
@@ -80,33 +81,27 @@ function shipDragContainer() {
   };
 
   const generateShip = (type) => {
-    let length;
     let shipClass;
     switch (type) {
       case "carrier":
         shipClass = new Carrier();
-        length = 5;
         break;
       case "battleship":
         shipClass = new Battleship();
-        length = 4;
         break;
       case "destroyer":
         shipClass = new Destroyer();
-        length = 3;
         break;
       case "submarine":
         shipClass = new Submarine();
-        length = 2;
         break;
       case "patrol":
         shipClass = new PatrolBoat();
-        length = 2;
         break;
     }
     const ship = document.createElement("div");
     ship.classList.add("ship");
-    for (let i = 0; i < length; i++) {
+    for (let i = 0; i < shipClass.length; i++) {
       const cell = document.createElement("div");
       cell.classList.add("cell");
       ship.appendChild(cell);
@@ -115,18 +110,7 @@ function shipDragContainer() {
     ship.setAttribute("draggable", "true");
     ship.setAttribute("data-type", type);
 
-    ship.addEventListener("dragstart", (event) => {
-      const buttonValue = document.querySelector(".direction").value;
-      event.dataTransfer.setData("type", type);
-      event.dataTransfer.setData("direction", buttonValue);
-
-      // Hardcode players - bot for now.
-      // TODO: change it.
-      event.dataTransfer.setData(
-        "players",
-        JSON.stringify(gameplay().players("player", "bot"))
-      );
-    });
+    ship.addEventListener("dragstart", (event) => dragStartEvent(event, type));
     return ship;
   };
 

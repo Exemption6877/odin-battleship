@@ -1,5 +1,14 @@
 import generateButton from "../index.js";
 
+const setupBuffer = [];
+
+function dragStartEvent(event, type) {
+  event.dataTransfer.setData("type", type);
+
+  const buttonValue = document.querySelector(".direction").value;
+  event.dataTransfer.setData("direction", buttonValue);
+}
+
 function dragoverEvent(event) {
   event.preventDefault();
 }
@@ -14,4 +23,4 @@ function onAllShipsPlaced() {
   }
 }
 
-export { dragoverEvent, onAllShipsPlaced };
+export { dragStartEvent, dragoverEvent, onAllShipsPlaced };
