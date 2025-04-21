@@ -10,6 +10,8 @@ import "./styles.css";
 import gameboardRender from "./ui/gameboardUI.js";
 import { dragStartEvent } from "./ui/dragFunctions.js";
 
+const game = gameplay();
+
 function generateButton() {
   const playAgainstButton = (player) => {
     const button = document.createElement("button");
@@ -22,13 +24,13 @@ function generateButton() {
       wrapper.classList.add("hidden");
 
       if (button.value === "bot") {
-        gameplay().players("player", "bot");
+        gameplay().createPlayers("player", button.value);
       } else {
       }
       gameplay().setup();
 
-      const gameboardBlock = document.querySelector(".gameboard");
-      gameboardBlock.append(shipDragContainer().output());
+      const gameboardContainer = document.querySelector(".gameboard");
+      gameboardContainer.append(shipDragContainer().output());
     });
     return button;
   };
@@ -166,25 +168,25 @@ const shipDirection = () => {
 function gameplay() {
   // Notify on actions here
   const textContainer = document.querySelector(".text-area");
-  const gameboardBlock = document.querySelector(".gameboard");
+  const gameboardContainer = document.querySelector(".gameboard");
 
   let player1 = null;
   let player2 = null;
 
-  const createPlayer = (name) => {
-    const player = name === "player" ? new Player() : new PlayerBot();
+  const createPlayers = (p1, p2) => {
+    player1 = p1 === "player" ? new Player() : new PlayerBot();
+    player2 = p2 === "player" ? new Player() : new PlayerBot();
 
-    if (player instanceof PlayerBot) {
-      player.generateGameboard();
+    if (player1 instanceof PlayerBot) {
+      player1.generateGameboard();
     }
 
-    return player;
+    if (player2 instanceof PlayerBot) {
+      player2.generateGameboard();
+    }
   };
 
-  const players = (p1, p2) => {
-    player1 = createPlayer(p1);
-    player2 = createPlayer(p2);
-
+  const getPlayers = () => {
     return { player1, player2 };
   };
 
@@ -198,10 +200,12 @@ function gameplay() {
     const h1 = document.createElement("h1");
     h1.innerText = "Drag and drop your ships onto the board";
     textContainer.appendChild(h1);
-    gameboardBlock.appendChild(gameboardRender().generateTable("Your ships"));
+    gameboardContainer.appendChild(
+      gameboardRender().generateTable("Your ships")
+    );
   };
 
-  return { players, setup };
+  return { getPlayers, createPlayers, setup };
 }
 
 // Button in HTML
@@ -210,8 +214,8 @@ gameStartButton.addEventListener("click", () => {
   const greetingBlock = document.querySelector(".greeting");
   greetingBlock.classList.add("hidden");
 
-  const gameboardBlock = document.querySelector(".gameboard");
-  gameboardBlock.append(generateButton().chooseOpponentButtons());
+  const gameboardContainer = document.querySelector(".gameboard");
+  gameboardContainer.append(generateButton().chooseOpponentButtons());
 });
 
 export default generateButton;
