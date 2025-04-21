@@ -10,6 +10,8 @@ import "./styles.css";
 import gameboardRender from "./ui/gameboardUI.js";
 import { dragStartEvent } from "./ui/dragFunctions.js";
 
+// Main instance of the game. (Controller)
+// This will be used to map all logic.
 const game = gameplay();
 
 function generateButton() {
@@ -66,26 +68,25 @@ function shipDragContainer() {
     return dragContainer;
   };
 
-  const generateShip = (type) => {
-    let shipClass;
+  const getShipClass = (type) => {
     switch (type) {
       case "carrier":
-        shipClass = new Carrier();
-        break;
+        return new Carrier();
       case "battleship":
-        shipClass = new Battleship();
-        break;
+        return new Battleship();
       case "destroyer":
-        shipClass = new Destroyer();
-        break;
+        return new Destroyer();
       case "submarine":
-        shipClass = new Submarine();
-        break;
+        return new Submarine();
       case "patrol":
-        shipClass = new PatrolBoat();
-        break;
+        return new PatrolBoat();
+      default:
+        console.log(`Error: unknown ship type = ${type}`);
     }
+  };
 
+  const generateShip = (type) => {
+    const shipClass = getShipClass(type);
     const ship = document.createElement("div");
     ship.classList.add("ship");
     for (let i = 0; i < shipClass.length; i++) {
