@@ -38,7 +38,7 @@ class PlayerBot extends Player {
       new PatrolBoat(),
     ];
     let placedCount = 0;
-
+    
     while (placedCount < ships.length) {
       const x = this.__randomGen(9);
       const y = this.__randomGen(9);

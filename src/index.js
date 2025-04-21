@@ -10,6 +10,7 @@ import {
 } from "./ship.js";
 import "./styles.css";
 import gameboardRender from "./ui/gameboardUI.js";
+import { dragStartEvent } from "./ui/dragFunctions.js";
 
 function generateButton() {
   const playAgainst = (player) => {
@@ -24,7 +25,6 @@ function generateButton() {
 
       if (button.value === "bot") {
         gameplay().players("player", "bot");
-        console.log(gameplay().players("player", "bot"));
       }
 
       gameplay().setup();
@@ -52,12 +52,50 @@ function generateButton() {
     button.classList.add("hidden");
     button.innerText = "Start Game!";
 
+    button.addEventListener("click", () => {
+      console.log(gameplay().players("player", "bot"));
+
+      let passedShips = gameboardRender().sendShips();
+      passedShips.forEach((entry) => {
+        let shipClass;
+        switch (entry.type) {
+          case "carrier":
+            shipClass = new Carrier();
+            break;
+          case "battleship":
+            shipClass = new Battleship();
+            break;
+          case "destroyer":
+            shipClass = new Destroyer();
+
+            break;
+          case "submarine":
+            shipClass = new Submarine();
+
+            break;
+          case "patrol":
+            shipClass = new PatrolBoat();
+            break;
+        }
+
+        gameplay()
+          .players()
+          .player1.personalGameboard.placeShip(
+            entry.coordinate,
+            shipClass,
+            entry.direction
+          );
+      });
+      console.log(gameplay().players().player1.callGameboard());
+    });
+
     return button;
   };
 
   return { chooseOpponent, startGame };
 }
 
+// refactor this
 function generateText() {
   const heading = (text) => {
     const h1 = document.createElement("h1");
@@ -80,52 +118,39 @@ function shipDragContainer() {
   };
 
   const generateShip = (type) => {
-    let length;
     let shipClass;
     switch (type) {
       case "carrier":
         shipClass = new Carrier();
-        length = 5;
         break;
       case "battleship":
         shipClass = new Battleship();
-        length = 4;
         break;
       case "destroyer":
         shipClass = new Destroyer();
-        length = 3;
         break;
       case "submarine":
         shipClass = new Submarine();
-        length = 2;
         break;
       case "patrol":
         shipClass = new PatrolBoat();
-        length = 2;
         break;
     }
     const ship = document.createElement("div");
     ship.classList.add("ship");
-    for (let i = 0; i < length; i++) {
+    for (let i = 0; i < shipClass.length; i++) {
       const cell = document.createElement("div");
       cell.classList.add("cell");
       ship.appendChild(cell);
     }
     ship.classList.add("vertical");
     ship.setAttribute("draggable", "true");
-    ship.setAttribute("data-type", type);
+    const direction = document.querySelector(".direction");
+    const directionValue = direction ? direction.value : "vertical";
+    ship.classList.add(directionValue);
 
     ship.addEventListener("dragstart", (event) => {
-      const buttonValue = document.querySelector(".direction").value;
-      event.dataTransfer.setData("type", type);
-      event.dataTransfer.setData("direction", buttonValue);
-
-      // Hardcode players - bot for now.
-      // TODO: change it.
-      event.dataTransfer.setData(
-        "players",
-        JSON.stringify(gameplay().players("player", "bot"))
-      );
+      dragStartEvent(event, type, directionValue);
     });
     return ship;
   };
@@ -196,17 +221,12 @@ const shipDirection = () => {
 };
 
 function gameplay() {
-  // Notify on actions here
   const textContainer = document.querySelector(".text-area");
   const gameboardBlock = document.querySelector(".gameboard");
 
   const createPlayer = (name) => {
     const player = name === "player" ? new Player() : new PlayerBot();
-
-    if (player instanceof PlayerBot) {
-      player.generateGameboard();
-    }
-
+    if (player instanceof PlayerBot) player.generateGameboard();
     return player;
   };
 
@@ -218,9 +238,15 @@ function gameplay() {
   };
 
   const setup = () => {
+    // create players here
     textContainer.appendChild(generateText().placeShips());
     gameboardBlock.appendChild(gameboardRender().generateTable("Your ships"));
   };
+
+  // set ships here
+  const setPlayerShips = () => {};
+  // start turns here
+  const gameStart = () => {};
 
   return { players, setup };
 }

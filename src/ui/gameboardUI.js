@@ -8,9 +8,18 @@ import {
 } from "../ship.js";
 import { dragoverEvent, onAllShipsPlaced } from "./dragFunctions.js";
 
+const placedShips = [];
+
 function gameboardRender() {
   const takenCells = [];
-  const placedShips = [];
+
+  const sendShips = () => {
+    return placedShips;
+  };
+
+  const addShips = (ship) => {
+    placedShips.push(ship);
+  };
 
   const generateRow = (y) => {
     const rowBlock = document.createElement("tr");
@@ -61,7 +70,6 @@ function gameboardRender() {
       let coordinates = button.value.split(" ");
       coordinates = coordinates.map((coord) => parseInt(coord));
       const ship = __detectShipClass(shipType);
-      console.log(coordinates, shipType, shipDirection);
 
       const notFilled = document.querySelectorAll(
         ".gameboard-cell:not(.friendly-ship):not(.adjusted-cell)"
@@ -95,17 +103,21 @@ function gameboardRender() {
       const notTaken = takenCheck();
 
       if (notTaken) {
+        addShips({
+          coordinate: coordinates,
+          type: shipType,
+          direction: shipDirection,
+        });
+
         notFilled.forEach((cell) => {
           for (let coord of cellsToFill) {
             let cellCoord = cell.value.split(" ");
             cellCoord = cellCoord.map((coord) => parseInt(coord));
-
             if (cellCoord[0] === coord[0] && cellCoord[1] === coord[1]) {
               const aroundCells = new Gameboard().aroundArea([cellCoord]);
               takenCells.push(cellCoord);
               cell.classList.add("friendly-ship");
               cell.removeEventListener("dragover", dragoverEvent);
-
               aroundCells.forEach((aroundCoord) => {
                 for (let randomCell of notFilled) {
                   let randomCoordinate = randomCell.value.split(" ");
@@ -206,7 +218,7 @@ function gameboardRender() {
     return tableFoot;
   };
 
-  return { generateTable };
+  return { sendShips, generateTable };
 }
 
 export default gameboardRender;

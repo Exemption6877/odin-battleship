@@ -1,7 +1,23 @@
 import generateButton from "../index.js";
+import gameboardRender from "./gameboardUI.js";
+
+const shipBuffer = [];
+
+function dragStartEvent(event, type, direction) {
+  event.dataTransfer.setData("type", type);
+  event.dataTransfer.setData("direction", direction);
+}
 
 function dragoverEvent(event) {
   event.preventDefault();
+}
+
+function dropEvent(event) {
+  event.preventDefault();
+}
+
+function transferBuffer() {
+  return shipBuffer;
 }
 
 function onAllShipsPlaced() {
@@ -14,4 +30,4 @@ function onAllShipsPlaced() {
   }
 }
 
-export { dragoverEvent, onAllShipsPlaced };
+export { dragStartEvent, dragoverEvent, onAllShipsPlaced };
