@@ -1,5 +1,3 @@
-import generateButton from "../index.js";
-
 const setupBuffer = [];
 
 function dragStartEvent(event, type) {
