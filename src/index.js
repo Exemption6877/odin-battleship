@@ -1,6 +1,4 @@
-import { Gameboard } from "./gameboard.js";
 import { Player, PlayerBot } from "./player.js";
-import { Ship } from "./ship.js";
 import {
   Carrier,
   Battleship,
@@ -57,19 +55,6 @@ function generateButton() {
   };
 
   return { chooseOpponent, startGame };
-}
-
-function generateText() {
-  const heading = (text) => {
-    const h1 = document.createElement("h1");
-    h1.innerText = text;
-    return h1;
-  };
-
-  const placeShips = () => {
-    return heading("Drag and drop your ships onto the board");
-  };
-  return { placeShips };
 }
 
 function shipDragContainer() {
@@ -144,7 +129,6 @@ function shipDragContainer() {
 
 const shipDirection = () => {
   const button = document.createElement("button");
-
   button.classList.add("direction");
   button.innerText = "Vertical";
   button.value = "vertical";
@@ -201,8 +185,16 @@ function gameplay() {
     return { player1, player2 };
   };
 
+  const chooseAgainst = () => {
+    const button = document.querySelector(".btn-choice");
+    if (button.value === "bot") {
+    }
+  };
+
   const setup = () => {
-    textContainer.appendChild(generateText().placeShips());
+    const h1 = document.createElement("h1");
+    h1.innerText = "Drag and drop your ships onto the board";
+    textContainer.appendChild(h1);
     gameboardBlock.appendChild(gameboardRender().generateTable("Your ships"));
   };
 
