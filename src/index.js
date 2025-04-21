@@ -11,7 +11,7 @@ import gameboardRender from "./ui/gameboardUI.js";
 import { dragStartEvent } from "./ui/dragFunctions.js";
 
 function generateButton() {
-  const playAgainst = (player) => {
+  const playAgainstButton = (player) => {
     const button = document.createElement("button");
     button.classList.add("btn-choice");
     button.innerText = `Play against ${player}`;
@@ -23,9 +23,8 @@ function generateButton() {
 
       if (button.value === "bot") {
         gameplay().players("player", "bot");
-        console.log(gameplay().players("player", "bot"));
+      } else {
       }
-
       gameplay().setup();
 
       const gameboardBlock = document.querySelector(".gameboard");
@@ -34,11 +33,11 @@ function generateButton() {
     return button;
   };
 
-  const chooseOpponent = (player1, player2) => {
+  const chooseOpponentButtons = (player1 = "player", player2 = "bot") => {
     const wrapper = document.createElement("div");
     wrapper.classList.add("choose-opponent");
-    const button1 = playAgainst(player1);
-    const button2 = playAgainst(player2);
+    const button1 = playAgainstButton(player1);
+    const button2 = playAgainstButton(player2);
     wrapper.append(button1, button2);
 
     return wrapper;
@@ -54,7 +53,7 @@ function generateButton() {
     return button;
   };
 
-  return { chooseOpponent, startGame };
+  return { chooseOpponentButtons, startGame };
 }
 
 function shipDragContainer() {
@@ -84,6 +83,7 @@ function shipDragContainer() {
         shipClass = new PatrolBoat();
         break;
     }
+
     const ship = document.createElement("div");
     ship.classList.add("ship");
     for (let i = 0; i < shipClass.length; i++) {
@@ -168,6 +168,9 @@ function gameplay() {
   const textContainer = document.querySelector(".text-area");
   const gameboardBlock = document.querySelector(".gameboard");
 
+  let player1 = null;
+  let player2 = null;
+
   const createPlayer = (name) => {
     const player = name === "player" ? new Player() : new PlayerBot();
 
@@ -179,15 +182,15 @@ function gameplay() {
   };
 
   const players = (p1, p2) => {
-    const player1 = createPlayer(p1);
-    const player2 = createPlayer(p2);
+    player1 = createPlayer(p1);
+    player2 = createPlayer(p2);
 
     return { player1, player2 };
   };
 
-  const chooseAgainst = () => {
-    const button = document.querySelector(".btn-choice");
-    if (button.value === "bot") {
+  const chooseAgainst = (opponent = "bot") => {
+    if (opponent === "bot") {
+      gameplay().setup();
     }
   };
 
@@ -201,16 +204,14 @@ function gameplay() {
   return { players, setup };
 }
 
+// Button in HTML
 const gameStartButton = document.querySelector("#game-start");
 gameStartButton.addEventListener("click", () => {
   const greetingBlock = document.querySelector(".greeting");
   greetingBlock.classList.add("hidden");
 
   const gameboardBlock = document.querySelector(".gameboard");
-  gameboardBlock.append(generateButton().chooseOpponent("player", "bot"));
+  gameboardBlock.append(generateButton().chooseOpponentButtons());
 });
-
-const againstButtons = document.querySelectorAll(".btn-choice");
-againstButtons.addEventListener("click", () => {});
 
 export default generateButton;
