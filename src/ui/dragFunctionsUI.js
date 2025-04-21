@@ -92,13 +92,23 @@ function shipDragContainer() {
     return arr;
   };
 
+  const startGameButton = () => {
+    const button = document.createElement("button");
+    button.classList.add("start-game");
+    button.classList.add("btn-choice");
+    button.classList.add("hidden");
+    button.innerText = "Start Game!";
+
+    return button;
+  };
+
   const output = () => {
     const dragContainer = document.createElement("div");
     dragContainer.classList.add("drag");
     const ships = shipsArr();
     const directionButton = shipDirectionChanger();
     dragContainer.appendChild(directionButton);
-    dragContainer.appendChild(gameplay().startGameButton());
+    dragContainer.appendChild(startGameButton());
 
     ships.forEach((ship) => {
       dragContainer.appendChild(ship);

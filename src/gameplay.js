@@ -72,21 +72,10 @@ function gameplay() {
     return wrapper;
   };
 
-  const startGameButton = () => {
-    const button = document.createElement("button");
-    button.classList.add("start-game");
-    button.classList.add("btn-choice");
-    button.classList.add("hidden");
-    button.innerText = "Start Game!";
-
-    return button;
-  };
-
   return {
     getPlayers,
     createPlayers,
     setup,
-    startGameButton,
     chooseOpponentButtons,
   };
 }
