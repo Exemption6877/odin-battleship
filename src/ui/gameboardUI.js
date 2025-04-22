@@ -13,6 +13,13 @@ function gameboardRender() {
     }
   };
 
+  const hideSetup = () => {
+    const description = document.querySelector(".setup-description");
+    const table = document.querySelector(".setup-table");
+    description.remove();
+    table.remove();
+  };
+
   const generateRow = (y) => {
     const rowBlock = document.createElement("tr");
     const rowCounter = document.createElement("th");
@@ -36,8 +43,8 @@ function gameboardRender() {
     button.addEventListener("drop", (event) => {
       event.preventDefault();
 
-      const shipType = event.dataTransfer.getData("data-type");
-      const ship = getShipClass(shipType);
+      const shipClassData = event.dataTransfer.getData("data-type");
+      const shipClass = getShipClass(shipClassData);
       const shipDirection = event.dataTransfer.getData("data-direction");
       const playerData = event.dataTransfer.getData("data-player");
       const player = getPlayerByString(playerData);
@@ -46,7 +53,7 @@ function gameboardRender() {
       coordinates = coordinates.map((coord) => parseInt(coord));
       const shipCoordinates = player.personalGameboard.placeShip(
         coordinates,
-        ship,
+        shipClass,
         shipDirection
       );
       if (shipCoordinates) {
@@ -74,7 +81,9 @@ function gameboardRender() {
             });
           });
         });
-        const droppedShip = document.querySelector(`[data-type="${shipType}"]`);
+        const droppedShip = document.querySelector(
+          `[data-type="${shipClassData}"]`
+        );
         droppedShip.classList.add("hidden");
       }
 
@@ -115,7 +124,7 @@ function gameboardRender() {
     return tableFoot;
   };
 
-  return { generateTable };
+  return { onAllShipsPlaced, generateTable };
 }
 
 export default gameboardRender;

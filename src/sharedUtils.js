@@ -20,6 +20,7 @@ function getShipClass(type) {
 
 function getPlayerByString(string) {
   const players = game.getPlayers();
+  console.log(players);
   const playersArray = Object.values(players);
   for (let i = 0; i < playersArray.length; i++) {
     if (playersArray[i].name === string) {

@@ -41,12 +41,7 @@ function gameplay() {
     );
   };
 
-  const hideSetup = () => {
-    const description = document.querySelector(".setup-description");
-    const table = document.querySelector(".setup-table");
-    description.remove();
-    table.remove();
-  };
+
 
   // Object to change
   const playAgainstButton = (player) => {
@@ -76,6 +71,10 @@ function gameplay() {
     return button;
   };
   // Object to change
+  // const gameLoop = (players) => {
+
+  // }
+
   const chooseOpponentButtons = (player1 = "player", player2 = "bot") => {
     const wrapper = document.createElement("div");
     wrapper.classList.add("choose-opponent");
