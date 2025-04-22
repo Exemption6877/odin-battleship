@@ -1,6 +1,6 @@
 import { Player, PlayerBot } from "./player.js";
 import gameboardRender from "./ui/gameboardUI.js";
-import shipDragContainer from "./ui/dragFunctionsUI.js";
+import prepPhase from "./ui/prepPhase.js";
 
 // Main instance of the game. (Controller)
 // This will be used to map all logic.
@@ -50,12 +50,12 @@ function gameplay() {
       const wrapper = document.querySelector(".choose-opponent");
       wrapper.classList.add("hidden");
       // If player2 === "player", start placing boats for 2nd non-bot player.
-      //  Maybe create another factory for shipDragContainer specifically for 2 players.
+      //  Maybe create another factory for prepPhase specifically for 2 players.
       createPlayers("player", button.value);
       setup();
 
       const gameboardContainer = document.querySelector(".gameboard");
-      gameboardContainer.append(shipDragContainer().output());
+      gameboardContainer.append(prepPhase().output());
     });
     return button;
   };

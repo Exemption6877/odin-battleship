@@ -7,7 +7,7 @@ import {
   PatrolBoat,
 } from "../ship.js";
 
-function shipDragContainer() {
+function prepPhase() {
   // should refactor this
   const shipDirectionChanger = () => {
     const button = document.createElement("button");
@@ -17,14 +17,13 @@ function shipDragContainer() {
 
     button.addEventListener("click", () => {
       const ships = document.querySelectorAll(".ship");
+      const container = document.querySelector(".drag");
 
       if (button.value === "vertical") {
         button.innerText = "Horizontal";
         button.value = "horizontal";
-        const container = document.querySelector(".drag");
 
         container.classList.add("vertical");
-
         ships.forEach((ship) => {
           ship.classList.remove("vertical");
           ship.classList.add("horizontal");
@@ -32,7 +31,6 @@ function shipDragContainer() {
       } else {
         button.innerText = "Vertical";
         button.value = "vertical";
-        const container = document.querySelector(".drag");
 
         container.classList.remove("vertical");
         ships.forEach((ship) => {
@@ -69,6 +67,7 @@ function shipDragContainer() {
     for (let i = 0; i < shipClass.length; i++) {
       const cell = document.createElement("div");
       cell.classList.add("cell");
+      cell.classList.add("friendly-ship");
       ship.appendChild(cell);
     }
     ship.classList.add("vertical");
@@ -119,4 +118,4 @@ function shipDragContainer() {
   return { output };
 }
 
-export default shipDragContainer;
+export default prepPhase;

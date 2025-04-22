@@ -6,11 +6,21 @@ import {
   Submarine,
   PatrolBoat,
 } from "../ship.js";
-import { dragoverEvent, onAllShipsPlaced } from "./dragFunctions.js";
+import { dragoverEvent } from "./dragFunctions.js";
 
 function gameboardRender() {
   const takenCells = [];
   const placedShips = [];
+
+  const onAllShipsPlaced = () => {
+    const hiddenShips = document.querySelectorAll(".ship.hidden");
+    if (hiddenShips.length >= 5) {
+      const directionButton = document.querySelector(".direction");
+      directionButton.classList.add("hidden");
+      const startGameButton = document.querySelector(".start-game");
+      startGameButton.classList.remove("hidden");
+    }
+  };
 
   const generateRow = (y) => {
     const rowBlock = document.createElement("tr");
