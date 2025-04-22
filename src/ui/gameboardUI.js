@@ -1,12 +1,6 @@
 import { Gameboard } from "../gameboard.js";
-import {
-  Carrier,
-  Battleship,
-  Destroyer,
-  Submarine,
-  PatrolBoat,
-} from "../ship.js";
 import { dragoverEvent } from "./dragFunctions.js";
+import getShipClass from "../sharedUtils.js";
 import { game } from "../index.js";
 
 function gameboardRender() {
@@ -35,24 +29,6 @@ function gameboardRender() {
     return rowBlock;
   };
   const generateCell = (x, y) => {
-    function __detectShipClass(string) {
-      switch (string) {
-        case "carrier":
-          return new Carrier();
-
-        case "battleship":
-          return new Battleship();
-
-        case "destroyer":
-          return new Destroyer();
-
-        case "submarine":
-          return new Submarine();
-
-        case "patrol":
-          return new PatrolBoat();
-      }
-    }
     const wrapper = document.createElement("td");
     const button = document.createElement("button");
     button.classList.add("gameboard-cell");
@@ -79,8 +55,8 @@ function gameboardRender() {
 
       let coordinates = button.value.split(" ");
       coordinates = coordinates.map((coord) => parseInt(coord));
-      const ship = __detectShipClass(shipType);
-      console.log(coordinates, shipType, shipDirection);
+      const ship = getShipClass(shipType);
+      console.log(coordinates, ship, shipDirection);
 
       const notFilled = document.querySelectorAll(
         ".gameboard-cell:not(.friendly-ship):not(.adjusted-cell)"
