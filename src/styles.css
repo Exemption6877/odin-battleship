@@ -1,11 +1,11 @@
+:root {
+  font-family: Roboto, "Times New Roman", Times, serif;
+}
+
 html,
 body {
   padding: 0;
   margin: 0;
-}
-
-:root {
-  font-family: Roboto, "Times New Roman", Times, serif;
 }
 
 body {

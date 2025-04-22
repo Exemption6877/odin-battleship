@@ -1,38 +1,41 @@
 import { Carrier, PatrolBoat } from "../src/ship";
 import { Gameboard } from "../src/gameboard";
 
-describe("Gameboard borderCheck()", () => {
+describe("Gameboard placeShip() border check behavior", () => {
   let newGameboard;
+  let patrol;
+
   beforeEach(() => {
     newGameboard = new Gameboard();
+    patrol = new PatrolBoat();
   });
 
-  test("x=10", () => {
-    expect(newGameboard.borderCheck([10, 0])).toBeFalsy();
+  test("Reject ship placement when x=10 (out of bounds)", () => {
+    expect(newGameboard.placeShip([10, 0], patrol, "vertical")).toBeFalsy();
   });
 
-  test("y=10", () => {
-    expect(newGameboard.borderCheck([0, 10])).toBeFalsy();
+  test("Reject ship placement when y=10 (out of bounds)", () => {
+    expect(newGameboard.placeShip([0, 10], patrol, "vertical")).toBeFalsy();
   });
 
-  test("x=-1", () => {
-    expect(newGameboard.borderCheck([-1, 1])).toBeFalsy();
+  test("Reject ship placement when x=-1 (out of bounds)", () => {
+    expect(newGameboard.placeShip([-1, 1], patrol, "vertical")).toBeFalsy();
   });
 
-  test("y=-1", () => {
-    expect(newGameboard.borderCheck([1, -1])).toBeFalsy();
+  test("Reject ship placement when y=-1 (out of bounds)", () => {
+    expect(newGameboard.placeShip([1, -1], patrol, "vertical")).toBeFalsy();
   });
 
-  test("Inside gameboard #1", () => {
-    expect(newGameboard.borderCheck([2, 3])).toBeTruthy();
+  test("Allow ship placement inside gameboard #1", () => {
+    expect(newGameboard.placeShip([2, 3], patrol, "vertical")).toBeTruthy();
   });
 
-  test("Inside gameboard #2", () => {
-    expect(newGameboard.borderCheck([5, 9])).toBeTruthy();
+  test("Allow ship placement inside gameboard #2", () => {
+    expect(newGameboard.placeShip([5, 9], patrol, "vertical")).toBeTruthy();
   });
 
-  test("Edge case, on the edge of the gameboard", () => {
-    expect(newGameboard.borderCheck([9, 9])).toBeTruthy();
+  test("Allow ship placement on the edge of the gameboard", () => {
+    expect(newGameboard.placeShip([9, 9], patrol, "vertical")).toBeTruthy();
   });
 });
 
