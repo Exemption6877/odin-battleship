@@ -1,11 +1,3 @@
-import {
-  Carrier,
-  Battleship,
-  Destroyer,
-  Submarine,
-  PatrolBoat,
-} from "./ship.js";
-
 class Gameboard {
   constructor() {
     this.hits = [];

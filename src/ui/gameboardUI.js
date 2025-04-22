@@ -39,13 +39,16 @@ function gameboardRender() {
 
     button.addEventListener("dragover", dragoverEvent);
 
-    // // button.addEventListener("drop", (event) => {
-    //   event.preventDefault();
-    //   const shipType = event.dataTransfer.getData("type");
-    //   const shipDirection = event.dataTransfer.getData("direction");
-    //   let coordinates = button.value.split(" ");
-    //   coordinates = coordinates.map((coord) => parseInt(coord));
-    // // });
+    button.addEventListener("drop", (event) => {
+      event.preventDefault();
+
+      const shipType = event.dataTransfer.getData("data-type");
+      const shipDirection = event.dataTransfer.getData("data-direction");
+      const shipClass = getShipClass(shipType);
+
+      let coordinates = button.value.split(" ");
+      coordinates = coordinates.map((coord) => parseInt(coord));
+    });
 
     button.addEventListener("drop", (event) => {
       event.preventDefault();
@@ -55,7 +58,6 @@ function gameboardRender() {
 
       let coordinates = button.value.split(" ");
       coordinates = coordinates.map((coord) => parseInt(coord));
-      const ship = getShipClass(shipType);
       console.log(coordinates, ship, shipDirection);
 
       const notFilled = document.querySelectorAll(
