@@ -1,16 +1,15 @@
 const setupBuffer = [];
 
 function dragStartEvent(event, type) {
-  event.dataTransfer.setData("type", type);
-
-  const buttonValue = document.querySelector(".direction").value;
-  event.dataTransfer.setData("direction", buttonValue);
+  event.dataTransfer.setData("data-type", type);
+  const direction = event.target.classList.contains("vertical")
+    ? "vertical"
+    : "horizontal";
+  event.dataTransfer.setData("data-direction", direction);
 }
 
 function dragoverEvent(event) {
   event.preventDefault();
 }
 
-
-
-export { dragStartEvent, dragoverEvent};
+export { dragStartEvent, dragoverEvent };

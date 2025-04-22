@@ -38,15 +38,16 @@ function prepPhase() {
   };
 
   const generateShip = (type) => {
-    const shipClass = getShipClass(type);
     const ship = document.createElement("div");
-    ship.classList.add("ship");
+    const shipClass = getShipClass(type);
+
     for (let i = 0; i < shipClass.length; i++) {
       const cell = document.createElement("div");
       cell.classList.add("cell");
       cell.classList.add("friendly-ship");
       ship.appendChild(cell);
     }
+    ship.classList.add("ship");
     ship.classList.add("vertical");
     ship.setAttribute("draggable", "true");
     ship.setAttribute("data-type", type);

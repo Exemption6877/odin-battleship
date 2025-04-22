@@ -50,8 +50,8 @@ function gameboardRender() {
     button.addEventListener("drop", (event) => {
       event.preventDefault();
 
-      const shipType = event.dataTransfer.getData("type");
-      const shipDirection = event.dataTransfer.getData("direction");
+      const shipType = event.dataTransfer.getData("data-type");
+      const shipDirection = event.dataTransfer.getData("data-direction");
 
       let coordinates = button.value.split(" ");
       coordinates = coordinates.map((coord) => parseInt(coord));
