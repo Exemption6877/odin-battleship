@@ -39,26 +39,28 @@ function gameboardRender() {
 
     button.addEventListener("dragover", dragoverEvent);
 
+    // button.addEventListener("drop", (event) => {
+    //   event.preventDefault();
+
+    //   const shipType = event.dataTransfer.getData("data-type");
+    //   const shipDirection = event.dataTransfer.getData("data-direction");
+    //   const shipClass = getShipClass(shipType);
+
+    //   let coordinates = button.value.split(" ");
+    //   coordinates = coordinates.map((coord) => parseInt(coord));
+    // });
+
     button.addEventListener("drop", (event) => {
       event.preventDefault();
 
       const shipType = event.dataTransfer.getData("data-type");
       const shipDirection = event.dataTransfer.getData("data-direction");
-      const shipClass = getShipClass(shipType);
+      const player = event.dataTransfer.getData("data-player");
+      const ship = getShipClass(shipType);
 
       let coordinates = button.value.split(" ");
       coordinates = coordinates.map((coord) => parseInt(coord));
-    });
-
-    button.addEventListener("drop", (event) => {
-      event.preventDefault();
-
-      const shipType = event.dataTransfer.getData("data-type");
-      const shipDirection = event.dataTransfer.getData("data-direction");
-
-      let coordinates = button.value.split(" ");
-      coordinates = coordinates.map((coord) => parseInt(coord));
-      console.log(coordinates, ship, shipDirection);
+      console.log(coordinates, player, shipDirection);
 
       const notFilled = document.querySelectorAll(
         ".gameboard-cell:not(.friendly-ship):not(.adjusted-cell)"
@@ -174,8 +176,9 @@ function gameboardRender() {
     return wrapper;
   };
 
-  const generateTable = (player) => {
+  const generateTable = (type, player) => {
     const table = document.createElement("table");
+    table.classList.add(`${type}-table`);
     const caption = document.createElement("caption");
     caption.innerText = `${player}`;
     const tableBody = document.createElement("tbody");

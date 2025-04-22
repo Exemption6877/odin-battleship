@@ -14,8 +14,8 @@ function gameplay() {
   let player2 = null;
 
   const createPlayers = (p1, p2) => {
-    player1 = p1 === "player" ? new Player() : new PlayerBot();
-    player2 = p2 === "player" ? new Player() : new PlayerBot();
+    player1 = p1 === "player" ? new Player(p1) : new PlayerBot(p1);
+    player2 = p2 === "player" ? new Player(p2) : new PlayerBot(p2);
 
     if (player1 instanceof PlayerBot) {
       player1.generateGameboard();
@@ -30,15 +30,24 @@ function gameplay() {
     return { player1, player2 };
   };
 
-  const setup = () => {
-    const h1 = document.createElement("h1");
-    h1.innerText = "Drag and drop your ships onto the board";
-    textContainer.appendChild(h1);
+  const setup = (player) => {
+    const description = document.createElement("h1");
+    description.classList.add("setup-description");
+    description.innerText = `Drag and drop your ships onto the board.`;
+    textContainer.appendChild(description);
 
     gameboardContainer.appendChild(
-      gameboardRender().generateTable("Your ships")
+      gameboardRender().generateTable("setup", `${player}`)
     );
   };
+
+  const hideSetup = () => {
+    const description = document.querySelector(".setup-description");
+    const table = document.querySelector(".setup-table");
+    description.remove();
+    table.remove();
+  };
+
   // Object to change
   const playAgainstButton = (player) => {
     const button = document.createElement("button");
@@ -47,15 +56,18 @@ function gameplay() {
     button.value = player;
 
     button.addEventListener("click", () => {
+      const gameboardContainer = document.querySelector(".gameboard");
       const wrapper = document.querySelector(".choose-opponent");
       wrapper.classList.add("hidden");
-      // If player2 === "player", start placing boats for 2nd non-bot player.
-      //  Maybe create another factory for prepPhase specifically for 2 players.
       createPlayers("player", button.value);
-      setup();
 
-      const gameboardContainer = document.querySelector(".gameboard");
-      gameboardContainer.append(prepPhase().output());
+      if (player === "bot") {
+        setup("player");
+        gameboardContainer.append(prepPhase().output("player1"));
+      } else {
+        // setup("player1");
+        // Logic for 2 players, do it much later.
+      }
     });
     return button;
   };

@@ -1,5 +1,6 @@
 import { dragStartEvent } from "./dragFunctions.js";
 import getShipClass from "../sharedUtils.js";
+import game from "../index.js";
 
 function prepPhase() {
   // should refactor this
@@ -37,7 +38,7 @@ function prepPhase() {
     return button;
   };
 
-  const generateShip = (type) => {
+  const generateShip = (type, player) => {
     const ship = document.createElement("div");
     const shipClass = getShipClass(type);
 
@@ -51,19 +52,22 @@ function prepPhase() {
     ship.classList.add("vertical");
     ship.setAttribute("draggable", "true");
     ship.setAttribute("data-type", type);
+    ship.setAttribute("data-player", player);
 
-    ship.addEventListener("dragstart", (event) => dragStartEvent(event, type));
+    ship.addEventListener("dragstart", (event) =>
+      dragStartEvent(event, type, player)
+    );
     return ship;
   };
 
-  const shipsArr = () => {
+  const shipsArr = (player) => {
     const arr = [];
     arr.push(
-      generateShip("carrier"),
-      generateShip("battleship"),
-      generateShip("destroyer"),
-      generateShip("submarine"),
-      generateShip("patrol")
+      generateShip("carrier", player),
+      generateShip("battleship", player),
+      generateShip("destroyer", player),
+      generateShip("submarine", player),
+      generateShip("patrol", player)
     );
     return arr;
   };
@@ -79,10 +83,10 @@ function prepPhase() {
     return button;
   };
 
-  const output = () => {
+  const output = (player) => {
     const dragContainer = document.createElement("div");
     dragContainer.classList.add("drag");
-    const ships = shipsArr();
+    const ships = shipsArr(player);
     const directionButton = shipDirectionChanger();
     dragContainer.appendChild(directionButton);
     dragContainer.appendChild(startGameButton());
