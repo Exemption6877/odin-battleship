@@ -1,6 +1,5 @@
 import { dragStartEvent } from "./dragFunctions.js";
 import getShipClass from "../sharedUtils.js";
-import game from "../index.js";
 
 function prepPhase() {
   // should refactor this

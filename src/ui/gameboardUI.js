@@ -1,4 +1,4 @@
-import { dragDropEvent, dragoverEvent } from "./dragFunctions.js";
+import { dragDropEvent, dragOverEvent } from "./dragFunctions.js";
 
 function gameboardRender() {
   const onAllShipsPlaced = () => {
@@ -8,14 +8,10 @@ function gameboardRender() {
       directionButton.classList.add("hidden");
       const startGameButton = document.querySelector(".start-game");
       startGameButton.classList.remove("hidden");
+      startGameButton.addEventListener("click", () => {
+        
+      })
     }
-  };
-
-  const hideSetup = () => {
-    const description = document.querySelector(".setup-description");
-    const table = document.querySelector(".setup-table");
-    description.remove();
-    table.remove();
   };
 
   const generateRow = (y) => {
@@ -36,10 +32,11 @@ function gameboardRender() {
     button.classList.add("cell");
     button.value = `${x} ${y}`;
 
-    button.addEventListener("dragover", dragoverEvent);
+    button.addEventListener("dragover", dragOverEvent);
 
     button.addEventListener("drop", (event) => {
       dragDropEvent(event, button);
+      onAllShipsPlaced();
     });
     wrapper.appendChild(button);
 

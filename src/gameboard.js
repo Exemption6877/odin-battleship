@@ -5,6 +5,10 @@ class Gameboard {
     this.takenCells = [];
   }
 
+  callTakenCells() {
+    return this.takenCells;
+  }
+
   duplicateCheck(pushedCoordinate, savedCoordinates) {
     let [Px, Py] = pushedCoordinate;
 

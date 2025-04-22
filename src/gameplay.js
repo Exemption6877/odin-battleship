@@ -41,8 +41,6 @@ function gameplay() {
     );
   };
 
-
-
   // Object to change
   const playAgainstButton = (player) => {
     const button = document.createElement("button");
@@ -70,10 +68,22 @@ function gameplay() {
     });
     return button;
   };
+  const hideSetup = () => {
+    const description = document.querySelector(".setup-description");
+    const table = document.querySelector(".setup-table");
+    description.remove();
+    table.remove();
+  };
   // Object to change
-  // const gameLoop = (players) => {
-
-  // }
+  const gameLoop = (players) => {
+    const gameboardContainer = document.querySelector(".gameboard");
+    const gameStartButton = document.querySelector(".start-game");
+    gameStartButton.addEventListener("click", () => {
+      gameboardContainer.appendChild(gameboardRender().output("Enemy"));
+    });
+    //Probably will move it to index.js
+    // Render both Tables? left enemy, right yours.
+  };
 
   const chooseOpponentButtons = (player1 = "player", player2 = "bot") => {
     const wrapper = document.createElement("div");

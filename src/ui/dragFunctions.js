@@ -10,7 +10,7 @@ function dragStartEvent(event, type, player) {
   event.dataTransfer.setData("data-player", player);
 }
 
-function dragoverEvent(event) {
+function dragOverEvent(event) {
   event.preventDefault();
 }
 
@@ -43,16 +43,19 @@ function dragDropEvent(event, button) {
           shipCoordinate[1] === cellCoordinate[1]
         ) {
           cell.classList.add("friendly-ship");
-          cell.removeEventListener("dragover", dragoverEvent);
+          cell.removeEventListener("dragover", dragOverEvent);
         }
-        player.personalGameboard.takenCells.forEach((takenCell) => {
-          if (
-            cellCoordinate[0] === takenCell[0] &&
-            cellCoordinate[1] === takenCell[1]
-          ) {
-            cell.removeEventListener("dragover", dragoverEvent);
-          }
-        });
+        player
+          .callGameboard()
+          .callTakenCells()
+          .forEach((takenCell) => {
+            if (
+              cellCoordinate[0] === takenCell[0] &&
+              cellCoordinate[1] === takenCell[1]
+            ) {
+              cell.removeEventListener("dragover", dragOverEvent);
+            }
+          });
       });
     });
     const droppedShip = document.querySelector(
@@ -62,4 +65,4 @@ function dragDropEvent(event, button) {
   }
 }
 
-export { dragDropEvent, dragStartEvent, dragoverEvent };
+export { dragDropEvent, dragStartEvent, dragOverEvent };
