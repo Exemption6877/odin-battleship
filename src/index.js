@@ -12,3 +12,5 @@ gameStartButton.addEventListener("click", () => {
 });
 
 const game = gameplay();
+
+export default game;

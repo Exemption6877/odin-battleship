@@ -7,6 +7,7 @@ import {
   PatrolBoat,
 } from "../ship.js";
 import { dragoverEvent } from "./dragFunctions.js";
+import { game } from "../index.js";
 
 function gameboardRender() {
   const takenCells = [];
