@@ -8,7 +8,8 @@ import {
 } from "./ship.js";
 
 class Player {
-  constructor() {
+  constructor(name = "Unknown") {
+    this.name = name;
     this.personalGameboard = new Gameboard();
   }
 
@@ -18,8 +19,8 @@ class Player {
 }
 
 class PlayerBot extends Player {
-  constructor() {
-    super();
+  constructor(name) {
+    super(name);
   }
 
   __randomGen(num) {

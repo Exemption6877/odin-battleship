@@ -1,24 +1,21 @@
-import { Gameboard } from "../gameboard.js";
-import {
-  Carrier,
-  Battleship,
-  Destroyer,
-  Submarine,
-  PatrolBoat,
-} from "../ship.js";
-import { dragoverEvent, onAllShipsPlaced } from "./dragFunctions.js";
-
-const placedShips = [];
+import { dragDropEvent, dragoverEvent } from "./dragFunctions.js";
 
 function gameboardRender() {
-  const takenCells = [];
-
-  const sendShips = () => {
-    return placedShips;
+  const onAllShipsPlaced = () => {
+    const hiddenShips = document.querySelectorAll(".ship.hidden");
+    if (hiddenShips.length >= 5) {
+      const directionButton = document.querySelector(".direction");
+      directionButton.classList.add("hidden");
+      const startGameButton = document.querySelector(".start-game");
+      startGameButton.classList.remove("hidden");
+    }
   };
 
-  const addShips = (ship) => {
-    placedShips.push(ship);
+  const hideSetup = () => {
+    const description = document.querySelector(".setup-description");
+    const table = document.querySelector(".setup-table");
+    description.remove();
+    table.remove();
   };
 
   const generateRow = (y) => {
@@ -33,164 +30,25 @@ function gameboardRender() {
     return rowBlock;
   };
   const generateCell = (x, y) => {
-    function __detectShipClass(string) {
-      switch (string) {
-        case "carrier":
-          return new Carrier();
-
-        case "battleship":
-          return new Battleship();
-
-        case "destroyer":
-          return new Destroyer();
-
-        case "submarine":
-          return new Submarine();
-
-        case "patrol":
-          return new PatrolBoat();
-      }
-    }
     const wrapper = document.createElement("td");
     const button = document.createElement("button");
     button.classList.add("gameboard-cell");
     button.classList.add("cell");
     button.value = `${x} ${y}`;
 
-    // Drag over event
-
     button.addEventListener("dragover", dragoverEvent);
 
     button.addEventListener("drop", (event) => {
-      event.preventDefault();
-
-      const shipType = event.dataTransfer.getData("type");
-      const shipDirection = event.dataTransfer.getData("direction");
-
-      let coordinates = button.value.split(" ");
-      coordinates = coordinates.map((coord) => parseInt(coord));
-      const ship = __detectShipClass(shipType);
-
-      const notFilled = document.querySelectorAll(
-        ".gameboard-cell:not(.friendly-ship):not(.adjusted-cell)"
-      );
-      const cellsToFill = new Gameboard().placeShip(
-        coordinates,
-        ship,
-        shipDirection
-      );
-
-      function takenCheck() {
-        if (!Array.isArray(cellsToFill) || cellsToFill.length === 0) {
-          return false;
-        }
-
-        for (let cellToFill of cellsToFill) {
-          const [x, y] = cellToFill;
-          if (x < 0 || x > 9 || y < 0 || y > 9) {
-            return false;
-          }
-
-          for (let takenCell of takenCells) {
-            if (x === takenCell[0] && y === takenCell[1]) {
-              return false;
-            }
-          }
-        }
-        return true;
-      }
-
-      const notTaken = takenCheck();
-
-      if (notTaken) {
-        addShips({
-          coordinate: coordinates,
-          type: shipType,
-          direction: shipDirection,
-        });
-
-        notFilled.forEach((cell) => {
-          for (let coord of cellsToFill) {
-            let cellCoord = cell.value.split(" ");
-            cellCoord = cellCoord.map((coord) => parseInt(coord));
-            if (cellCoord[0] === coord[0] && cellCoord[1] === coord[1]) {
-              const aroundCells = new Gameboard().aroundArea([cellCoord]);
-              takenCells.push(cellCoord);
-              cell.classList.add("friendly-ship");
-              cell.removeEventListener("dragover", dragoverEvent);
-              aroundCells.forEach((aroundCoord) => {
-                for (let randomCell of notFilled) {
-                  let randomCoordinate = randomCell.value.split(" ");
-                  randomCoordinate = randomCoordinate.map((coord) =>
-                    parseInt(coord)
-                  );
-                  if (
-                    randomCoordinate[0] === aroundCoord[0] &&
-                    randomCoordinate[1] === aroundCoord[1] &&
-                    !randomCell.classList.contains("friendly-ship")
-                  ) {
-                    takenCells.push(randomCoordinate);
-                    randomCell.classList.add("adjusted-cell");
-                    randomCell.removeEventListener("dragover", dragoverEvent);
-
-                    const [fx, fy] = cellsToFill.at(0);
-                    const [lx, ly] = cellsToFill.at(-1);
-
-                    if (shipDirection === "vertical") {
-                      takenCells.push([fx - 1, fy + 1]);
-                      takenCells.push([fx + 1, fy + 1]);
-
-                      takenCells.push([lx - 1, ly - 1]);
-                      takenCells.push([lx + 1, ly - 1]);
-                    } else {
-                      takenCells.push([fx - 1, fy - 1]);
-                      takenCells.push([fx - 1, fy + 1]);
-
-                      takenCells.push([lx + 1, ly - 1]);
-                      takenCells.push([lx + 1, ly + 1]);
-                    }
-
-                    takenCells.forEach((takenCoordinate) => {
-                      notFilled.forEach((randomCell) => {
-                        let randomCoordinate = randomCell.value.split(" ");
-                        randomCoordinate = randomCoordinate.map((coord) =>
-                          parseInt(coord)
-                        );
-
-                        if (
-                          randomCoordinate[0] === takenCoordinate[0] &&
-                          randomCoordinate[1] === takenCoordinate[1]
-                        ) {
-                          randomCell.removeEventListener(
-                            "dragover",
-                            dragoverEvent
-                          );
-                        }
-                      });
-                    });
-                  }
-                }
-              });
-            }
-          }
-        });
-
-        //hide dropped ship
-        const droppedShip = document.querySelector(`[data-type="${shipType}"]`);
-        droppedShip.classList.add("hidden");
-      } else {
-        console.log("Cannot place the ship: some cells are already taken.");
-      }
-
-      onAllShipsPlaced();
+      dragDropEvent(event, button);
     });
     wrapper.appendChild(button);
 
     return wrapper;
   };
 
-  const generateTable = (player) => {
+  const generateTable = (type, player) => {
     const table = document.createElement("table");
+    table.classList.add(`${type}-table`);
     const caption = document.createElement("caption");
     caption.innerText = `${player}`;
     const tableBody = document.createElement("tbody");
@@ -218,7 +76,7 @@ function gameboardRender() {
     return tableFoot;
   };
 
-  return { sendShips, generateTable };
+  return { onAllShipsPlaced, generateTable };
 }
 
 export default gameboardRender;

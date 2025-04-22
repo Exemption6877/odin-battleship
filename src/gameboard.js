@@ -1,11 +1,3 @@
-import {
-  Carrier,
-  Battleship,
-  Destroyer,
-  Submarine,
-  PatrolBoat,
-} from "./ship.js";
-
 class Gameboard {
   constructor() {
     this.hits = [];
@@ -13,26 +5,52 @@ class Gameboard {
     this.takenCells = [];
   }
 
-  borderCheck(coordinate) {
-    const [x, y] = coordinate;
-    return x >= 0 && x <= 9 && y >= 0 && y <= 9;
-  }
+  duplicateCheck(pushedCoordinate, savedCoordinates) {
+    let [Px, Py] = pushedCoordinate;
 
-  aroundArea(coordinatesArray) {
-    let arr = [];
-    for (let coordinate of coordinatesArray) {
-      let [x, y] = coordinate;
-      arr.push(coordinate);
-      arr.push([x + 1, y], [x - 1, y], [x, y + 1], [x, y - 1]);
+    for (let entry of savedCoordinates) {
+      let [Sx, Sy] = entry;
+      if (Px === Sx && Py === Sy) {
+        return true;
+      }
     }
-    arr = arr.filter((element) => this.borderCheck(element));
-    arr.forEach((element) => {
-      this.takenCells.push(element);
-    });
-    return arr;
+    return false;
   }
 
   placeShip(coordinate, ship, direction) {
+    const borderCheck = (coordinate) => {
+      const [x, y] = coordinate;
+      return x >= 0 && x <= 9 && y >= 0 && y <= 9;
+    };
+
+    const overlapCheck = (coordinatesArray) => {
+      for (let coordinate of coordinatesArray) {
+        const [x, y] = coordinate;
+        for (let takenCoordinate of this.takenCells) {
+          const [Tx, Ty] = takenCoordinate;
+
+          if (x === Tx && y === Ty) {
+            return true;
+          }
+        }
+      }
+      return false;
+    };
+
+    const aroundArea = (coordinatesArray) => {
+      let arr = [];
+      for (let coordinate of coordinatesArray) {
+        let [x, y] = coordinate;
+        arr.push(coordinate);
+        arr.push([x + 1, y], [x - 1, y], [x, y + 1], [x, y - 1]);
+      }
+      arr = arr.filter((element) => borderCheck(element));
+      arr.forEach((element) => {
+        this.takenCells.push(element);
+      });
+      return arr;
+    };
+
     let [x, y] = coordinate;
     let fullCoordinates = [];
 
@@ -46,7 +64,7 @@ class Gameboard {
     }
 
     for (let i = 0; i < ship.length; i++) {
-      if (!this.borderCheck([x, y])) {
+      if (!borderCheck([x, y])) {
         return false;
       }
 
@@ -57,33 +75,28 @@ class Gameboard {
         x += 1;
       }
     }
+    if (overlapCheck(fullCoordinates)) {
+      return false;
+    }
 
     const [fx, fy] = fullCoordinates.at(0);
     const [lx, ly] = fullCoordinates.at(-1);
 
     if (direction === "vertical") {
-      if (this.borderCheck([fx - 1, fy + 1]))
-        this.takenCells.push([fx - 1, fy + 1]);
-      if (this.borderCheck([fx + 1, fy + 1]))
-        this.takenCells.push([fx + 1, fy + 1]);
+      if (borderCheck([fx - 1, fy + 1])) this.takenCells.push([fx - 1, fy + 1]);
+      if (borderCheck([fx + 1, fy + 1])) this.takenCells.push([fx + 1, fy + 1]);
 
-      if (this.borderCheck([lx - 1, ly - 1]))
-        this.takenCells.push([lx - 1, ly - 1]);
-      if (this.borderCheck([lx + 1, ly - 1]))
-        this.takenCells.push([lx + 1, ly - 1]);
+      if (borderCheck([lx - 1, ly - 1])) this.takenCells.push([lx - 1, ly - 1]);
+      if (borderCheck([lx + 1, ly - 1])) this.takenCells.push([lx + 1, ly - 1]);
     } else {
-      if (this.borderCheck([fx - 1, fy - 1]))
-        this.takenCells.push([fx - 1, fy - 1]);
-      if (this.borderCheck([fx - 1, fy + 1]))
-        this.takenCells.push([fx - 1, fy + 1]);
+      if (borderCheck([fx - 1, fy - 1])) this.takenCells.push([fx - 1, fy - 1]);
+      if (borderCheck([fx - 1, fy + 1])) this.takenCells.push([fx - 1, fy + 1]);
 
-      if (this.borderCheck([lx + 1, ly - 1]))
-        this.takenCells.push([lx + 1, ly - 1]);
-      if (this.borderCheck([lx + 1, ly + 1]))
-        this.takenCells.push([lx + 1, ly + 1]);
+      if (borderCheck([lx + 1, ly - 1])) this.takenCells.push([lx + 1, ly - 1]);
+      if (borderCheck([lx + 1, ly + 1])) this.takenCells.push([lx + 1, ly + 1]);
     }
 
-    this.aroundArea(fullCoordinates);
+    aroundArea(fullCoordinates);
     fullCoordinates.forEach((coord) => {
       ship.setCoordinate(coord);
     });
@@ -106,18 +119,6 @@ class Gameboard {
       }
     }
     this.hits.push(coordinate);
-    return false;
-  }
-
-  duplicateCheck(pushedCoordinate, savedCoordinates) {
-    let [Px, Py] = pushedCoordinate;
-
-    for (let entry of savedCoordinates) {
-      let [Sx, Sy] = entry;
-      if (Px === Sx && Py === Sy) {
-        return true;
-      }
-    }
     return false;
   }
 
