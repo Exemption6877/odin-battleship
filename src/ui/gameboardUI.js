@@ -63,6 +63,14 @@ function gameboardRender() {
 
     button.addEventListener("dragover", dragoverEvent);
 
+    // // button.addEventListener("drop", (event) => {
+    //   event.preventDefault();
+    //   const shipType = event.dataTransfer.getData("type");
+    //   const shipDirection = event.dataTransfer.getData("direction");
+    //   let coordinates = button.value.split(" ");
+    //   coordinates = coordinates.map((coord) => parseInt(coord));
+    // // });
+
     button.addEventListener("drop", (event) => {
       event.preventDefault();
 

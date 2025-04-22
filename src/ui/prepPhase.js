@@ -1,11 +1,5 @@
 import { dragStartEvent } from "./dragFunctions.js";
-import {
-  Carrier,
-  Battleship,
-  Destroyer,
-  Submarine,
-  PatrolBoat,
-} from "../ship.js";
+import getShipClass from "../sharedUtils.js";
 
 function prepPhase() {
   // should refactor this
@@ -41,23 +35,6 @@ function prepPhase() {
     });
 
     return button;
-  };
-
-  const getShipClass = (type) => {
-    switch (type) {
-      case "carrier":
-        return new Carrier();
-      case "battleship":
-        return new Battleship();
-      case "destroyer":
-        return new Destroyer();
-      case "submarine":
-        return new Submarine();
-      case "patrol":
-        return new PatrolBoat();
-      default:
-        console.log(`Error: unknown ship type = ${type}`);
-    }
   };
 
   const generateShip = (type) => {
