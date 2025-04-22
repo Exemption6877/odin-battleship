@@ -1,7 +1,8 @@
 import { Gameboard } from "../gameboard.js";
 import { dragoverEvent } from "./dragFunctions.js";
 import getShipClass from "../sharedUtils.js";
-import { game } from "../index.js";
+import { getPlayerByString } from "../sharedUtils.js";
+import game from "../index.js";
 
 function gameboardRender() {
   const takenCells = [];
@@ -45,6 +46,7 @@ function gameboardRender() {
     //   const shipType = event.dataTransfer.getData("data-type");
     //   const shipDirection = event.dataTransfer.getData("data-direction");
     //   const shipClass = getShipClass(shipType);
+    //   const player = event.dataTransfer.getData("data-player");
 
     //   let coordinates = button.value.split(" ");
     //   coordinates = coordinates.map((coord) => parseInt(coord));
@@ -55,12 +57,16 @@ function gameboardRender() {
 
       const shipType = event.dataTransfer.getData("data-type");
       const shipDirection = event.dataTransfer.getData("data-direction");
-      const player = event.dataTransfer.getData("data-player");
+      const playerData = event.dataTransfer.getData("data-player");
+      const player = getPlayerByString(playerData);
+
+      console.log(player);
+
       const ship = getShipClass(shipType);
 
       let coordinates = button.value.split(" ");
       coordinates = coordinates.map((coord) => parseInt(coord));
-      console.log(coordinates, player, shipDirection);
+      // console.log(coordinates, player, shipDirection);
 
       const notFilled = document.querySelectorAll(
         ".gameboard-cell:not(.friendly-ship):not(.adjusted-cell)"

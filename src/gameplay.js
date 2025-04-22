@@ -59,12 +59,16 @@ function gameplay() {
       const gameboardContainer = document.querySelector(".gameboard");
       const wrapper = document.querySelector(".choose-opponent");
       wrapper.classList.add("hidden");
-      createPlayers("player", button.value);
 
       if (player === "bot") {
+        createPlayers("player", button.value);
+
         setup("player");
-        gameboardContainer.append(prepPhase().output("player1"));
+        gameboardContainer.append(prepPhase().output("player"));
       } else {
+        createPlayers("player1", "player2");
+        gameboardContainer.append(prepPhase().output("player1"));
+
         // setup("player1");
         // Logic for 2 players, do it much later.
       }

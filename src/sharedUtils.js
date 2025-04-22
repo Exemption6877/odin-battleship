@@ -1,4 +1,5 @@
 import * as ship from "./ship.js";
+import game from "./index.js";
 
 function getShipClass(type) {
   switch (type) {
@@ -17,4 +18,15 @@ function getShipClass(type) {
   }
 }
 
+function getPlayerByString(string) {
+  const players = game.getPlayers();
+  const playersArray = Object.values(players);
+  for (let i = 0; i < playersArray.length; i++) {
+    if (playersArray[i].name === string) {
+      return playersArray[i];
+    }
+  }
+}
+
 export default getShipClass;
+export { getPlayerByString };
