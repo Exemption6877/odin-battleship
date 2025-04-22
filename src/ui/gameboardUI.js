@@ -1,8 +1,6 @@
-import { Gameboard } from "../gameboard.js";
 import { dragoverEvent } from "./dragFunctions.js";
 import getShipClass from "../sharedUtils.js";
 import { getPlayerByString } from "../sharedUtils.js";
-import game from "../index.js";
 
 function gameboardRender() {
   const onAllShipsPlaced = () => {
@@ -33,8 +31,6 @@ function gameboardRender() {
     button.classList.add("cell");
     button.value = `${x} ${y}`;
 
-    // Drag over event
-
     button.addEventListener("dragover", dragoverEvent);
 
     button.addEventListener("drop", (event) => {
@@ -45,8 +41,6 @@ function gameboardRender() {
       const shipDirection = event.dataTransfer.getData("data-direction");
       const playerData = event.dataTransfer.getData("data-player");
       const player = getPlayerByString(playerData);
-
-      console.log(player);
 
       let coordinates = button.value.split(" ");
       coordinates = coordinates.map((coord) => parseInt(coord));
@@ -82,88 +76,9 @@ function gameboardRender() {
         });
         const droppedShip = document.querySelector(`[data-type="${shipType}"]`);
         droppedShip.classList.add("hidden");
-      } else {
-        console.log("out of bounds");
       }
 
-      // old code
-
-      // if (notTaken) {
-      //   notFilled.forEach((cell) => {
-      //     for (let coord of cellsToFill) {
-      //       let cellCoord = cell.value.split(" ");
-      //       cellCoord = cellCoord.map((coord) => parseInt(coord));
-
-      //       if (cellCoord[0] === coord[0] && cellCoord[1] === coord[1]) {
-      //         const aroundCells = new Gameboard().aroundArea([cellCoord]);
-      //         takenCells.push(cellCoord);
-      //         cell.classList.add("friendly-ship");
-      //         cell.removeEventListener("dragover", dragoverEvent);
-
-      //         aroundCells.forEach((aroundCoord) => {
-      //           for (let randomCell of notFilled) {
-      //             let randomCoordinate = randomCell.value.split(" ");
-      //             randomCoordinate = randomCoordinate.map((coord) =>
-      //               parseInt(coord)
-      //             );
-      //             if (
-      //               randomCoordinate[0] === aroundCoord[0] &&
-      //               randomCoordinate[1] === aroundCoord[1] &&
-      //               !randomCell.classList.contains("friendly-ship")
-      //             ) {
-      //               takenCells.push(randomCoordinate);
-      //               randomCell.classList.add("adjusted-cell");
-      //               randomCell.removeEventListener("dragover", dragoverEvent);
-
-      //               const [fx, fy] = cellsToFill.at(0);
-      //               const [lx, ly] = cellsToFill.at(-1);
-
-      //               if (shipDirection === "vertical") {
-      //                 takenCells.push([fx - 1, fy + 1]);
-      //                 takenCells.push([fx + 1, fy + 1]);
-
-      //                 takenCells.push([lx - 1, ly - 1]);
-      //                 takenCells.push([lx + 1, ly - 1]);
-      //               } else {
-      //                 takenCells.push([fx - 1, fy - 1]);
-      //                 takenCells.push([fx - 1, fy + 1]);
-
-      //                 takenCells.push([lx + 1, ly - 1]);
-      //                 takenCells.push([lx + 1, ly + 1]);
-      //               }
-
-      //               takenCells.forEach((takenCoordinate) => {
-      //                 notFilled.forEach((randomCell) => {
-      //                   let randomCoordinate = randomCell.value.split(" ");
-      //                   randomCoordinate = randomCoordinate.map((coord) =>
-      //                     parseInt(coord)
-      //                   );
-
-      //                   if (
-      //                     randomCoordinate[0] === takenCoordinate[0] &&
-      //                     randomCoordinate[1] === takenCoordinate[1]
-      //                   ) {
-      //                     randomCell.removeEventListener(
-      //                       "dragover",
-      //                       dragoverEvent
-      //                     );
-      //                   }
-      //                 });
-      //               });
-      //             }
-      //           }
-      //         });
-      //       }
-      //     }
-      //   });
-
-      //   //hide dropped ship
-
-      // } else {
-      //   console.log("Cannot place the ship: some cells are already taken.");
-      // }
-
-      // onAllShipsPlaced();
+      onAllShipsPlaced();
     });
     wrapper.appendChild(button);
 
