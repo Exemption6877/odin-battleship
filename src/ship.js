@@ -5,6 +5,10 @@ class Ship {
     this.coordinates = [];
   }
 
+  callCoordinates() {
+    return this.coordinates;
+  }
+
   hit() {
     this.currentHits += 1;
   }

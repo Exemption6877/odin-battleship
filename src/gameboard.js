@@ -9,6 +9,10 @@ class Gameboard {
     return this.takenCells;
   }
 
+  callPlacedShips() {
+    return this.placedShips;
+  }
+
   duplicateCheck(pushedCoordinate, savedCoordinates) {
     let [Px, Py] = pushedCoordinate;
 
