@@ -4,10 +4,25 @@ class Gameboard {
     this.placedShips = [];
     this.takenCells = [];
   }
-
+  // NEED MORE CHECKS, IT ALLOWS PLACING
+  // ON TOP OF EXISTING SHIPS
   borderCheck(coordinate) {
     const [x, y] = coordinate;
     return x >= 0 && x <= 9 && y >= 0 && y <= 9;
+  }
+
+  overlapCheck(coordinatesArray) {
+    for (let coordinate of coordinatesArray) {
+      const [x, y] = coordinate;
+      for (let takenCoordinate of this.takenCells) {
+        const [Tx, Ty] = takenCoordinate;
+
+        if (x === Tx && y === Ty) {
+          return true;
+        }
+      }
+    }
+    return false;
   }
 
   aroundArea(coordinatesArray) {
@@ -74,6 +89,8 @@ class Gameboard {
       if (this.borderCheck([lx + 1, ly + 1]))
         this.takenCells.push([lx + 1, ly + 1]);
     }
+
+    // if for overlap
 
     this.aroundArea(fullCoordinates);
     fullCoordinates.forEach((coord) => {
