@@ -39,15 +39,23 @@ function gameplay() {
 
     button.addEventListener("click", () => {
       hideTable();
+      renderPlayerTable(player1);
     });
 
     return button;
   };
 
   const renderPlayerTable = (player) => {
-    gameboardRender().output("player");
+    const gameboardContainer = document.querySelector(".gameboard");
 
-    const table = document.querySelector(`.${player}-table`);
+    const table = gameboardRender().generateTable(player.callName());
+    const cells = document.querySelectorAll(
+      `.${player.callName()}-table button`
+    );
+    cells.forEach((cell) => {
+      cell.textContent = "bruh";
+    });
+    gameboardContainer.append(table);
   };
 
   const setup = (player) => {
@@ -77,7 +85,8 @@ function gameplay() {
         prepPhase().output("player", startGameButton());
       } else {
         createPlayers("player1", "player2");
-        // gameboardContainer.append(prepPhase().output("player1"));
+        // pass a nextPlayerButton here
+        // prepPhase().output("player1");
 
         // setup("player1");
         // Logic for 2 players, do it much later.
