@@ -39,22 +39,46 @@ function gameplay() {
 
     button.addEventListener("click", () => {
       hideTable();
-      renderPlayerTable(player1);
+      renderPlayerTable(player1, true);
+      renderPlayerTable(player2, false);
     });
 
     return button;
   };
 
-  const renderPlayerTable = (player) => {
+  const renderPlayerTable = (player, expose = false) => {
     const gameboardContainer = document.querySelector(".gameboard");
+    const playerName = player.callName();
+    console.log(playerName);
+    const table = gameboardRender().generateTable(playerName, playerName);
+    const cells = document.querySelectorAll(`.${playerName}-table button`);
 
-    const table = gameboardRender().generateTable(player.callName());
-    const cells = document.querySelectorAll(
-      `.${player.callName()}-table button`
-    );
-    cells.forEach((cell) => {
-      cell.textContent = "bruh";
-    });
+    if (expose) {
+      const coordinatesArr = [];
+      const placedShips = player.callGameboard().callPlacedShips();
+
+      placedShips.forEach((ship) => {
+        ship.callCoordinates().forEach((coordinate) => {
+          coordinatesArr.push(coordinate);
+        });
+      });
+
+      cells.forEach((cell) => {
+        let cellCoordinate = cell.value.split(" ");
+        cellCoordinate = cellCoordinate.map((coord) => parseInt(coord));
+
+        coordinatesArr.forEach((shipCoordinate) => {
+          if (
+            shipCoordinate[0] === cellCoordinate[0] &&
+            shipCoordinate[1] === cellCoordinate[1]
+          ) {
+            cell.classList.add("friendly-ship");
+          }
+        });
+      });
+      // show ships
+    }
+
     gameboardContainer.append(table);
   };
 
