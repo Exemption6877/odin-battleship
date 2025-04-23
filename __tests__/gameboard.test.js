@@ -63,7 +63,7 @@ describe("Gameboard general functions", () => {
 
   test("Throw error on duplicate attack", () => {
     newGameboard.receiveAttack([0, 1]);
-    expect(() => newGameboard.receiveAttack([0, 1])).toThrow(Error);
+    expect(() => newGameboard.receiveAttack([0, 1])).toBe(true);
   });
 
   test("Throw error when trying to place two PatrolBoats on the same square", () => {

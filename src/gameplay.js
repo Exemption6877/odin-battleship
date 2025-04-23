@@ -46,12 +46,41 @@ function gameplay() {
       renderPlayerTable(player1, true);
       renderPlayerTable(player2, false);
       addClickEventToTable(player2);
+      botAttack(player1, player2);
+
+      // while (
+      //   !player1.callGameboard().winState() ||
+      //   !player2.callGameboard().winState()
+      // ) {}
     });
 
     return button;
   };
 
-  const attack = (defender, event) => {
+  const botAttack = (defender, attacker) => {
+    let attackCoordinate = attacker.makeMove();
+    const defenderGameboard = defender.callGameboard();
+    console.log(attackCoordinate);
+
+    let action;
+    let wasHit = false;
+    while (true) {
+      action = defenderGameboard.receiveAttack(attackCoordinate);
+      if (action === false) {
+        break;
+      } else if (action === null) {
+        wasHit = false;
+        console.log(attackCoordinate);
+        attackCoordinate = attacker.makeMove(wasHit, attackCoordinate);
+      } else if (action === true) {
+        wasHit = true;
+        console.log(attackCoordinate);
+        attackCoordinate = attacker.makeMove(wasHit, attackCoordinate);
+      }
+    }
+  };
+
+  const playerAttack = (defender, event) => {
     const button = event.target;
     let cellCoordinate = button.value.split(" ");
     cellCoordinate = cellCoordinate.map((coord) => parseInt(coord));
@@ -67,7 +96,7 @@ function gameplay() {
     const cells = document.querySelectorAll(`.${playerName}-table .cell`);
 
     cells.forEach((cell) => {
-      cell.addEventListener("click", (event) => attack(player2, event), {
+      cell.addEventListener("click", (event) => playerAttack(player2, event), {
         once: true,
       });
     });

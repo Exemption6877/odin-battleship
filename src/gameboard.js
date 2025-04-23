@@ -116,7 +116,7 @@ class Gameboard {
   receiveAttack(coordinate) {
     let [x, y] = coordinate;
     if (this.duplicateCheck(coordinate, this.hits)) {
-      throw new Error("Duplicate");
+      return null;
     }
     for (const ship of this.placedShips) {
       for (let i = 0; i < ship.coordinates.length; i++) {
