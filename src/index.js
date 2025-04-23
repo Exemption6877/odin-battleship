@@ -1,4 +1,4 @@
-import gameplay from "./gameplay.js";
+import gameplay from "./ui/gameplay.js";
 import "./styles.css";
 
 const game = gameplay();

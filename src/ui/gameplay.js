@@ -1,10 +1,6 @@
-import { Player, PlayerBot } from "./player.js";
-import gameboardRender from "./ui/gameboardUI.js";
-import prepPhase from "./ui/prepPhase.js";
-import { allShipsPlaced } from "./sharedUtils.js";
-
-// Main instance of the game. (Controller)
-// This will be used to map all logic.
+import { Player, PlayerBot } from "../classes/player.js";
+import gameboardRender from "./gameboardUI.js";
+import prepPhase from "./prepPhase.js";
 
 function gameplay() {
   // Notify on actions here
@@ -38,17 +34,22 @@ function gameplay() {
     button.innerText = "Start Game!";
 
     button.addEventListener("click", () => {
-      hideTable();
-      // will move to a better function later
-      const guide = document.createElement("h1");
-      guide.textContent = "Attack by clicking a cell on the enemy gameboard.";
-      textContainer.appendChild(guide);
-      renderPlayerTable(player1, true);
-      renderPlayerTable(player2, false);
-      addClickEventToTable(player2);
+      if (player2.callName() === "bot") {
+        gameState();
+      }
     });
 
     return button;
+  };
+
+  const gameState = () => {
+    hideTable();
+    const guide = document.createElement("h1");
+    guide.textContent = "Attack by clicking a cell on the enemy gameboard.";
+    textContainer.appendChild(guide);
+    renderPlayerTable(player1, true);
+    renderPlayerTable(player2, false);
+    addClickEventToTable(player2);
   };
 
   const botAttack = (defender, attacker) => {
@@ -137,16 +138,16 @@ function gameplay() {
     });
   };
 
-  const endGame = (player) => {
+  const endGame = (winner) => {
     hideTable(player1.callName());
     hideTable(player2.callName());
 
     const h1 = document.createElement("h1");
 
-    if (player.callName() === "bot") {
+    if (winner.callName() === "bot") {
       h1.textContent = `Bot has won!`;
     } else {
-      h1.textContent = `Congratulations! ${player.callName()} has won!`;
+      h1.textContent = `Congratulations! ${winner.callName()} has won!`;
     }
 
     textContainer.appendChild(h1);
@@ -210,11 +211,6 @@ function gameplay() {
         prepPhase().output("player", startGameButton());
       } else {
         createPlayers("player1", "player2");
-        // pass a nextPlayerButton here
-        // prepPhase().output("player1");
-
-        // setup("player1");
-        // Logic for 2 players, do it much later.
       }
     });
     return button;
@@ -241,23 +237,13 @@ function gameplay() {
       dragContainer.remove();
     }
   };
-  // Object to change
-  const gameLoop = (players) => {
-    const gameboardContainer = document.querySelector(".gameboard");
-    const gameStartButton = document.querySelector(".start-game");
-    gameStartButton.addEventListener("click", () => {
-      gameboardContainer.appendChild(gameboardRender().output("Enemy"));
-    });
-    //Probably will move it to index.js
-    // Render both Tables? left enemy, right yours.
-  };
 
   const chooseOpponentButtons = (player1 = "player", player2 = "bot") => {
     const wrapper = document.createElement("div");
     wrapper.classList.add("choose-opponent");
-    const button1 = playAgainstButton(player1);
+    // const button1 = playAgainstButton(player1);
     const button2 = playAgainstButton(player2);
-    wrapper.append(button1, button2);
+    wrapper.append(button2);
 
     return wrapper;
   };

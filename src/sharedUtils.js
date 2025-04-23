@@ -1,4 +1,4 @@
-import * as ship from "./ship.js";
+import * as ship from "./classes/ship.js";
 import game from "./index.js";
 
 function getShipClass(type) {
