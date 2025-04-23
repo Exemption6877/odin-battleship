@@ -74,6 +74,7 @@ function prepPhase() {
   // If player2 === "player", start placing boats for 2nd non-bot player.
 
   const output = (player, button) => {
+    const gameboardContainer = document.querySelector(".gameboard");
     const dragContainer = document.createElement("div");
     dragContainer.classList.add("drag");
     const ships = shipsArr(player);
@@ -85,7 +86,7 @@ function prepPhase() {
       dragContainer.appendChild(ship);
     });
 
-    return dragContainer;
+    gameboardContainer.append(dragContainer);
   };
   return { output };
 }

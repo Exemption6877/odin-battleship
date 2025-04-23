@@ -37,6 +37,8 @@ function gameboardRender() {
   };
 
   const generateTable = (type, player) => {
+    const gameboardContainer = document.querySelector(".gameboard");
+
     const table = document.createElement("table");
     table.classList.add(`${type}-table`);
     const caption = document.createElement("caption");
@@ -48,7 +50,7 @@ function gameboardRender() {
     }
 
     table.append(caption, tableBody, generateFooter());
-    return table;
+    gameboardContainer.append(table);
   };
 
   const generateFooter = () => {
