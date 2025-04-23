@@ -47,11 +47,10 @@ function gameplay() {
   };
 
   const renderPlayerTable = (player, expose = false) => {
-    const gameboardContainer = document.querySelector(".gameboard");
     const playerName = player.callName();
-    console.log(playerName);
-    const table = gameboardRender().generateTable(playerName, playerName);
-    const cells = document.querySelectorAll(`.${playerName}-table button`);
+    gameboardRender().generateTable(playerName, playerName);
+
+    const cells = document.querySelectorAll(`.${playerName}-table .cell`);
 
     if (expose) {
       const coordinatesArr = [];
@@ -78,8 +77,6 @@ function gameplay() {
       });
       // show ships
     }
-
-    gameboardContainer.append(table);
   };
 
   const setup = (player) => {
@@ -121,10 +118,15 @@ function gameplay() {
   const hideTable = () => {
     const description = document.querySelector(".setup-description");
     const table = document.querySelector(".setup-table");
-    description.remove();
-    table.remove();
-
     const dragContainer = document.querySelector(".drag");
+
+    if (description) {
+      description.remove();
+    }
+
+    if (table) {
+      table.remove();
+    }
 
     if (dragContainer) {
       dragContainer.remove();

@@ -44,12 +44,13 @@ function gameboardRender() {
     const caption = document.createElement("caption");
     caption.innerText = `${player}`;
     const tableBody = document.createElement("tbody");
+    const footer = generateFooter();
 
     for (let i = 9; i >= 0; i--) {
       tableBody.appendChild(generateRow(i));
     }
 
-    table.append(caption, tableBody, generateFooter());
+    table.append(caption, tableBody, footer);
     gameboardContainer.append(table);
   };
 
@@ -68,7 +69,7 @@ function gameboardRender() {
     return tableFoot;
   };
 
-  return { allShipsPlaced, generateTable };
+  return { generateTable };
 }
 
 export default gameboardRender;
