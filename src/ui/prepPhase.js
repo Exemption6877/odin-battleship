@@ -72,23 +72,14 @@ function prepPhase() {
   };
   // Might need to refactor it according to gameplay() changes.
   // If player2 === "player", start placing boats for 2nd non-bot player.
-  const startGameButton = () => {
-    const button = document.createElement("button");
-    button.classList.add("start-game");
-    button.classList.add("btn-choice");
-    button.classList.add("hidden");
-    button.innerText = "Start Game!";
 
-    return button;
-  };
-
-  const output = (player) => {
+  const output = (player, button) => {
     const dragContainer = document.createElement("div");
     dragContainer.classList.add("drag");
     const ships = shipsArr(player);
     const directionButton = shipDirectionChanger();
     dragContainer.appendChild(directionButton);
-    dragContainer.appendChild(startGameButton());
+    dragContainer.appendChild(button);
 
     ships.forEach((ship) => {
       dragContainer.appendChild(ship);

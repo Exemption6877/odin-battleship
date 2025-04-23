@@ -1,19 +1,7 @@
 import { dragDropEvent, dragOverEvent } from "./dragFunctions.js";
+import { allShipsPlaced } from "../sharedUtils.js";
 
 function gameboardRender() {
-  const onAllShipsPlaced = () => {
-    const hiddenShips = document.querySelectorAll(".ship.hidden");
-    if (hiddenShips.length >= 5) {
-      const directionButton = document.querySelector(".direction");
-      directionButton.classList.add("hidden");
-      const startGameButton = document.querySelector(".start-game");
-      startGameButton.classList.remove("hidden");
-      startGameButton.addEventListener("click", () => {
-        
-      })
-    }
-  };
-
   const generateRow = (y) => {
     const rowBlock = document.createElement("tr");
     const rowCounter = document.createElement("th");
@@ -36,7 +24,12 @@ function gameboardRender() {
 
     button.addEventListener("drop", (event) => {
       dragDropEvent(event, button);
-      onAllShipsPlaced();
+      if (allShipsPlaced()) {
+        const directionButton = document.querySelector(".direction");
+        directionButton.classList.add("hidden");
+        const startGameButton = document.querySelector(".start-game");
+        startGameButton.classList.remove("hidden");
+      }
     });
     wrapper.appendChild(button);
 
@@ -73,7 +66,7 @@ function gameboardRender() {
     return tableFoot;
   };
 
-  return { onAllShipsPlaced, generateTable };
+  return { allShipsPlaced, generateTable };
 }
 
 export default gameboardRender;

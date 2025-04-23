@@ -28,5 +28,10 @@ function getPlayerByString(string) {
   }
 }
 
+function allShipsPlaced() {
+  const hiddenShips = document.querySelectorAll(".ship.hidden");
+  return hiddenShips.length === 5;
+}
+
 export default getShipClass;
-export { getPlayerByString };
+export { getPlayerByString, allShipsPlaced };

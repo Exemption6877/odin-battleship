@@ -131,6 +131,10 @@ tfoot > * {
   padding: 0.8rem 0.5rem;
 }
 
+.hit-ship {
+  background-color: rgb(160, 0, 0);
+}
+
 .friendly-ship {
   background-color: rgb(37, 21, 185);
 }

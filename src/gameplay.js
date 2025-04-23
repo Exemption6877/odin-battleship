@@ -1,6 +1,7 @@
 import { Player, PlayerBot } from "./player.js";
 import gameboardRender from "./ui/gameboardUI.js";
 import prepPhase from "./ui/prepPhase.js";
+import { allShipsPlaced } from "./sharedUtils.js";
 
 // Main instance of the game. (Controller)
 // This will be used to map all logic.
@@ -28,6 +29,17 @@ function gameplay() {
 
   const getPlayers = () => {
     return { player1, player2 };
+  };
+  const startGameButton = () => {
+    const button = document.createElement("button");
+    button.classList.add("start-game");
+    button.classList.add("btn-choice");
+    button.classList.add("hidden");
+    button.innerText = "Start Game!";
+
+    button.addEventListener("click", () => {});
+
+    return button;
   };
 
   const setup = (player) => {
@@ -57,7 +69,9 @@ function gameplay() {
         createPlayers("player", button.value);
 
         setup("player");
-        gameboardContainer.append(prepPhase().output("player"));
+        gameboardContainer.append(
+          prepPhase().output("player", startGameButton())
+        );
       } else {
         createPlayers("player1", "player2");
         gameboardContainer.append(prepPhase().output("player1"));
