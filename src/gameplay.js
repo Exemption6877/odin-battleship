@@ -46,12 +46,6 @@ function gameplay() {
       renderPlayerTable(player1, true);
       renderPlayerTable(player2, false);
       addClickEventToTable(player2);
-      botAttack(player1, player2);
-
-      // while (
-      //   !player1.callGameboard().winState() ||
-      //   !player2.callGameboard().winState()
-      // ) {}
     });
 
     return button;
@@ -59,35 +53,72 @@ function gameplay() {
 
   const botAttack = (defender, attacker) => {
     let attackCoordinate = attacker.makeMove();
-    const defenderGameboard = defender.callGameboard();
-    console.log(attackCoordinate);
+    const defenderCall = defender.callGameboard();
+    const cells = document.querySelectorAll(
+      `.${defender.callName()}-table .cell`
+    );
 
     let action;
     let wasHit = false;
+
     while (true) {
-      action = defenderGameboard.receiveAttack(attackCoordinate);
+      if (winCheck(defender)) {
+        endGame(attacker);
+        break;
+      }
+      action = defenderCall.receiveAttack(attackCoordinate);
       if (action === false) {
+        cells.forEach((cell) => {
+          let cellCoordinate = cell.value.split(" ");
+          cellCoordinate = cellCoordinate.map((coord) => parseInt(coord));
+
+          if (
+            attackCoordinate[0] === cellCoordinate[0] &&
+            attackCoordinate[1] === cellCoordinate[1]
+          ) {
+            cell.classList.add("missed-cell");
+          }
+        });
         break;
       } else if (action === null) {
         wasHit = false;
-        console.log(attackCoordinate);
         attackCoordinate = attacker.makeMove(wasHit, attackCoordinate);
       } else if (action === true) {
         wasHit = true;
-        console.log(attackCoordinate);
+        cells.forEach((cell) => {
+          let cellCoordinate = cell.value.split(" ");
+          cellCoordinate = cellCoordinate.map((coord) => parseInt(coord));
+
+          if (
+            attackCoordinate[0] === cellCoordinate[0] &&
+            attackCoordinate[1] === cellCoordinate[1]
+          ) {
+            cell.classList.add("hit-ship");
+            cell.classList.remove("friendly-ship");
+          }
+        });
         attackCoordinate = attacker.makeMove(wasHit, attackCoordinate);
       }
     }
   };
 
-  const playerAttack = (defender, event) => {
+  const winCheck = (player) => {
+    return player.callGameboard().winState();
+  };
+
+  const playerAttack = (attacker, defender, event) => {
     const button = event.target;
     let cellCoordinate = button.value.split(" ");
     cellCoordinate = cellCoordinate.map((coord) => parseInt(coord));
     if (defender.callGameboard().receiveAttack(cellCoordinate)) {
       button.classList.add("hit-ship");
+
+      if (winCheck(defender)) {
+        endGame(attacker);
+      }
     } else {
       button.classList.add("missed-cell");
+      botAttack(player1, player2);
     }
   };
 
@@ -96,9 +127,13 @@ function gameplay() {
     const cells = document.querySelectorAll(`.${playerName}-table .cell`);
 
     cells.forEach((cell) => {
-      cell.addEventListener("click", (event) => playerAttack(player2, event), {
-        once: true,
-      });
+      cell.addEventListener(
+        "click",
+        (event) => playerAttack(player1, player2, event),
+        {
+          once: true,
+        }
+      );
     });
   };
 
@@ -181,6 +216,11 @@ function gameplay() {
     const description = document.querySelector(".setup-description");
     const table = document.querySelector(`.${tableName}-table`);
     const dragContainer = document.querySelector(".drag");
+    const h1 = document.querySelector("h1");
+
+    if (h1) {
+      h1.remove();
+    }
 
     if (description) {
       description.remove();
