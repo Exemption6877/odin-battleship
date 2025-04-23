@@ -37,7 +37,9 @@ function gameplay() {
     button.classList.add("hidden");
     button.innerText = "Start Game!";
 
-    button.addEventListener("click", () => {});
+    button.addEventListener("click", () => {
+      hideTable();
+    });
 
     return button;
   };
@@ -82,11 +84,17 @@ function gameplay() {
     });
     return button;
   };
-  const hideSetup = () => {
+  const hideTable = () => {
     const description = document.querySelector(".setup-description");
     const table = document.querySelector(".setup-table");
     description.remove();
     table.remove();
+
+    const dragContainer = document.querySelector(".drag");
+
+    if (dragContainer) {
+      dragContainer.remove();
+    }
   };
   // Object to change
   const gameLoop = (players) => {
