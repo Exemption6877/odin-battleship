@@ -142,9 +142,16 @@ function gameplay() {
     hideTable(player2.callName());
 
     const h1 = document.createElement("h1");
-    h1.textContent = `Congratulations! ${player.callName()} has won!`;
+
+    if (player.callName() === "bot") {
+      h1.textContent = `Bot has won!`;
+    } else {
+      h1.textContent = `Congratulations! ${player.callName()} has won!`;
+    }
+
     textContainer.appendChild(h1);
   };
+
   const renderPlayerTable = (player, expose = false) => {
     const playerName = player.callName();
     gameboardRender().generateTable(playerName, playerName);
