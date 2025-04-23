@@ -122,6 +122,7 @@ class Gameboard {
       for (let i = 0; i < ship.coordinates.length; i++) {
         if (ship.coordinates[i][0] === x && ship.coordinates[i][1] === y) {
           ship.currentHits += 1;
+          this.hits.push(coordinate);
           return true;
         }
       }

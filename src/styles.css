@@ -135,6 +135,10 @@ tfoot > * {
   background-color: rgb(160, 0, 0);
 }
 
+.missed-cell {
+  background-color: white;
+}
+
 .friendly-ship {
   background-color: rgb(37, 21, 185);
 }

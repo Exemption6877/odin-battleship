@@ -2,6 +2,8 @@ function gameLoop() {
   const gameEnd = (player) => {
     // some DOM css stuff hiding and outputing `${player}` wins!
   };
+
+  // will be used as click listener.
   const attack = (attacker, defender, coordinate) => {
     const attackThisPlayer = defender.callGameboard().receiveAttack(coordinate);
     const winState = defender.callGameboard().winState();

@@ -39,22 +39,56 @@ function gameplay() {
 
     button.addEventListener("click", () => {
       hideTable();
+      // will move to a better function later
+      const guide = document.createElement("h1");
+      guide.textContent = "Attack by clicking a cell on the enemy gameboard.";
+      textContainer.appendChild(guide);
       renderPlayerTable(player1, true);
       renderPlayerTable(player2, false);
+      addClickEventToTable(player2);
     });
 
     return button;
   };
 
+  const attack = (defender, event) => {
+    const button = event.target;
+    let cellCoordinate = button.value.split(" ");
+    cellCoordinate = cellCoordinate.map((coord) => parseInt(coord));
+    if (defender.callGameboard().receiveAttack(cellCoordinate)) {
+      button.classList.add("hit-ship");
+    } else {
+      button.classList.add("missed-cell");
+    }
+  };
+
+  const addClickEventToTable = (player) => {
+    const playerName = player.callName();
+    const cells = document.querySelectorAll(`.${playerName}-table .cell`);
+
+    cells.forEach((cell) => {
+      cell.addEventListener("click", (event) => attack(player2, event), {
+        once: true,
+      });
+    });
+  };
+
+  const endGame = (player) => {
+    hideTable(player1.callName());
+    hideTable(player2.callName());
+
+    const h1 = document.createElement("h1");
+    h1.textContent = `Congratulations! ${player.callName()} has won!`;
+    textContainer.appendChild(h1);
+  };
   const renderPlayerTable = (player, expose = false) => {
     const playerName = player.callName();
     gameboardRender().generateTable(playerName, playerName);
 
-    const cells = document.querySelectorAll(`.${playerName}-table .cell`);
-
     if (expose) {
       const coordinatesArr = [];
       const placedShips = player.callGameboard().callPlacedShips();
+      const cells = document.querySelectorAll(`.${playerName}-table .cell`);
 
       placedShips.forEach((ship) => {
         ship.callCoordinates().forEach((coordinate) => {
@@ -75,7 +109,6 @@ function gameplay() {
           }
         });
       });
-      // show ships
     }
   };
 
@@ -115,9 +148,9 @@ function gameplay() {
     });
     return button;
   };
-  const hideTable = () => {
+  const hideTable = (tableName = "setup") => {
     const description = document.querySelector(".setup-description");
-    const table = document.querySelector(".setup-table");
+    const table = document.querySelector(`.${tableName}-table`);
     const dragContainer = document.querySelector(".drag");
 
     if (description) {
